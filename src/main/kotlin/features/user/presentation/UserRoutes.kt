@@ -1,8 +1,12 @@
 package com.haykor.features.user.presentation
 
+import com.haykor.features.auth.presentation.authRoutes
 import com.haykor.features.user.domain.CreateUserUseCase
 import com.haykor.features.user.domain.GetUserUseCase
 import io.ktor.http.*
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -12,6 +16,9 @@ fun Route.userRoutes() {
     val createUserUseCase by inject<CreateUserUseCase>()
     val getUserUseCase by inject<GetUserUseCase>()
 
+    /**
+     * Tag: User
+     */
     route("/user") {
         post {
             val request = call.receive<UserCreateRequest>()
@@ -26,6 +33,13 @@ fun Route.userRoutes() {
             val id = call.parameters["id"]?.toInt() ?: return@get call.respond(HttpStatusCode.BadRequest)
             val user = getUserUseCase.execute(id) ?: return@get call.respond(HttpStatusCode.NotFound)
             call.respond(HttpStatusCode.OK, user)
+        }
+        authenticate("auth-jwt") {
+            get("me") {
+                val principal = call.principal<JWTPrincipal>()
+                val sessionToken = principal?.payload?.getClaim("token")?.asString()
+                call.respondText("Your session ID is: $sessionToken")
+            }
         }
     }
 }

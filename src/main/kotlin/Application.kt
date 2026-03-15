@@ -1,11 +1,6 @@
 package com.haykor
 
-import com.haykor.plugins.configureDI
-import com.haykor.plugins.configureDatabases
-import com.haykor.plugins.configureRoutes
-import com.haykor.plugins.configureSecurity
-import com.haykor.plugins.configureSerialization
-import com.haykor.plugins.configureSwagger
+import com.haykor.plugins.*
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -13,10 +8,11 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureDatabases()
-    configureRoutes()
-    configureSwagger()
-    configureDI()
-    configureSerialization()
+    configureKoin()
     configureSecurity()
+    configureDatabases()
+    configureSwagger()
+    configureSerialization()
+
+    configureRoutes()
 }

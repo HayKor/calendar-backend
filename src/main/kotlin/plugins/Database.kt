@@ -1,6 +1,6 @@
 package com.haykor.plugins
 
-import com.haykor.features.auth.AuthSessionTable
+import com.haykor.features.auth.data.AuthSessionTable
 import com.haykor.features.user.data.UserTable
 import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Database
