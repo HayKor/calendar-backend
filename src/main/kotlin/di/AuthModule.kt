@@ -3,6 +3,7 @@ package com.haykor.di
 import com.haykor.features.auth.data.AuthSessionRepositoryImpl
 import com.haykor.features.auth.data.JwtEncryptor
 import com.haykor.features.auth.domain.AuthSessionRepository
+import com.haykor.features.auth.domain.ExternalLoginUseCase
 import com.haykor.features.auth.domain.LoginUseCase
 import io.ktor.server.config.*
 import org.koin.core.module.dsl.new
@@ -19,4 +20,5 @@ fun authModule(config: ApplicationConfig) = module {
 
     single<AuthSessionRepository> { AuthSessionRepositoryImpl(get()) }
     factory { new(::LoginUseCase) }
+    factory { new(::ExternalLoginUseCase) }
 }

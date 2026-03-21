@@ -1,12 +1,10 @@
 package com.haykor.features.user.presentation
 
-import com.haykor.features.auth.presentation.authRoutes
 import com.haykor.features.user.domain.CreateUserUseCase
 import com.haykor.features.user.domain.GetUserUseCase
 import io.ktor.http.*
-import io.ktor.server.auth.authenticate
-import io.ktor.server.auth.jwt.JWTPrincipal
-import io.ktor.server.auth.principal
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
