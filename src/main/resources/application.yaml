@@ -9,3 +9,10 @@ jwt:
   issuer: "http://0.0.0.0:8080"
   audience: "http://0.0.0.0:8080"
   realm: "Access to protected routes"
+oauth:
+  google:
+    clientId: ${GOOGLE_CLIENT_ID}
+    clientSecret: ${GOOGLE_CLIENT_SECRET}
+#  yandex:
+#    clientId: ${YANDEX_CLIENT_ID}
+#    clientSecret: ${YANDEX_CLIENT_SECRET}
