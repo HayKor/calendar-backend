@@ -12,5 +12,5 @@ data class User(
     val name: String,
     val email: String,
     val hashedPassword: String? = null,
-    val isVerified: Boolean
+    val isVerified: Boolean? = null
 )

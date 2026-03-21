@@ -18,9 +18,9 @@ fun Application.configureAuth(config: ApplicationConfig) {
 private fun Application.configureSecurity() {
     val jwtEncryptor by inject<JwtEncryptor>()
 
-    install(Authentication.Companion) {
+    authentication {
         jwt("auth-jwt") {
-            realm = "Access to auhtorized endpoints"
+            realm = "Access to authorized endpoints"
             verifier(jwtEncryptor.verifier)
             validate { credential ->
                 if (credential.payload.getClaim("token").asString() != null) {
@@ -30,7 +30,7 @@ private fun Application.configureSecurity() {
                 }
             }
             challenge { defaultScheme, realm ->
-                call.respond(HttpStatusCode.Companion.Unauthorized, "Token is not valid or has expired")
+                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
             }
         }
     }
@@ -41,7 +41,7 @@ private fun Application.configureOAuth(config: ApplicationConfig) {
 
     authentication {
         oauth("auth-oauth-google") {
-            urlProvider = { "http://localhost:8080/callback/google" }
+            urlProvider = { "http://localhost:8080/api/auth/callback/google" }
             providerLookup = {
                 OAuthServerSettings.OAuth2ServerSettings(
                     name = "google",

@@ -21,8 +21,14 @@ fun Route.userRoutes() {
         post {
             val request = call.receive<UserCreateRequest>()
             try {
-                val id = createUserUseCase.execute(request)
-                call.respond(HttpStatusCode.Created, mapOf("id" to id))
+                val user = createUserUseCase.execute(request)
+                call.respond(
+                    HttpStatusCode.Created, UserResponse(
+                        id = user.id,
+                        email = user.email,
+                        name = user.name,
+                    )
+                )
             } catch (e: IllegalArgumentException) {
                 call.respond(HttpStatusCode.Conflict, e.message ?: "Conflict")
             }

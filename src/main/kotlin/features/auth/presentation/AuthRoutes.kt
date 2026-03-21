@@ -46,6 +46,9 @@ fun Route.authRoutes() {
             )
         }
         authenticate("auth-oauth-google") {
+            get("/login/google") {
+                // automatic redirect to Google login page and then to /callback/google
+            }
             get("/callback/google") {
                 val principal = call.principal<OAuthAccessTokenResponse.OAuth2>() ?: return@get call.respond(
                     HttpStatusCode.Unauthorized
