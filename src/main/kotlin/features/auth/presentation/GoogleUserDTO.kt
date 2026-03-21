@@ -5,12 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GoogleUserDTO(
-    val id: String,
+    @SerialName("sub") val id: String,
     val email: String,
-    @SerialName("verified_email") val verifiedEmail: Boolean,
+    @SerialName("email_verified") val verifiedEmail: Boolean = false,
     val name: String,
     @SerialName("given_name") val firstName: String,
-    @SerialName("family_name") val lastName: String,
-    val picture: String,
-    val locale: String
+    @SerialName("family_name") val lastName: String? = null,
+    val picture: String? = null,
+    val locale: String? = null
 )
