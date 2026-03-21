@@ -1,10 +1,11 @@
 package com.haykor.features.user.data
 
+import com.haykor.features.user.domain.CreateUserParams
 import com.haykor.features.user.domain.User
 import com.haykor.features.user.domain.UserRepository
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.insertReturning
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -12,12 +13,14 @@ class UserRepositoryImpl(
     private val database: Database
 ) : UserRepository {
 
-    override suspend fun create(user: User): Int = transaction(database) {
-        UserTable.insertAndGetId {
+    override suspend fun create(user: CreateUserParams): User = transaction(database) {
+        UserTable.insertReturning {
             it[username] = user.name
             it[email] = user.email
             it[hashedPassword] = user.hashedPassword
-        }.value
+        }.map {
+            it.toUser()
+        }.single()
     }
 
     override suspend fun findByEmail(email: String): User? = transaction(database) {
@@ -36,6 +39,7 @@ class UserRepositoryImpl(
         id = this[UserTable.id].value,
         name = this[UserTable.username],
         email = this[UserTable.email],
-        hashedPassword = this[UserTable.hashedPassword]
+        hashedPassword = this[UserTable.hashedPassword],
+        isVerified = this[UserTable.isVerified]
     )
 }
