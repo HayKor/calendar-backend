@@ -14,6 +14,7 @@ fun Application.module() {
     configureDatabases()
     configureSwagger()
     configureSerialization()
+    configureStatusPages()
 
     configureRoutes()
 }

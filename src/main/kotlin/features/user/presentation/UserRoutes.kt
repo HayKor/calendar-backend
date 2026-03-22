@@ -3,6 +3,7 @@ package com.haykor.features.user.presentation
 import com.haykor.core.exception.BadRequest
 import com.haykor.features.user.domain.CreateUserUseCase
 import com.haykor.features.user.domain.GetUserUseCase
+import com.haykor.features.user.domain.UserNotFound
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -35,12 +36,13 @@ fun Route.userRoutes() {
             }
         }
         get("/{id}") {
-            val id = call.parameters["id"]?.toInt() ?: throw BadRequest("Invalid id")
+            val id = call.parameters["id"]?.toIntOrNull() ?: throw BadRequest("Invalid id")
             val user = getUserUseCase.execute(id) ?: throw UserNotFound()
             call.respond(HttpStatusCode.OK, user)
         }
         authenticate("auth-jwt") {
             get("me") {
+                // TODO: return user's info
                 val principal = call.principal<JWTPrincipal>()
                 val sessionToken = principal?.payload?.getClaim("token")?.asString()
                 call.respondText("Your session ID is: $sessionToken")

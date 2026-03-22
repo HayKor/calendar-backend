@@ -8,7 +8,7 @@ class CreateUserUseCase(
 ) {
     suspend fun execute(request: UserCreateRequest): User {
         if (repository.findByEmail(request.email) != null) {
-            throw IllegalArgumentException("User already exists")
+            throw UserAlreadyExists()
         }
 
         val newUser = CreateUserParams(
