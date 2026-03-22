@@ -1,6 +1,9 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package com.haykor.features.auth.domain
 
-import java.util.*
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 data class CreateAuthSession(
     val userId: Int,
@@ -12,6 +15,6 @@ data class AuthSession(
     val userId: Int,
     val userIp: String,
     val userAgent: String,
-    val accessToken: UUID,
-    val refreshToken: UUID
+    val accessToken: Uuid,
+    val refreshToken: Uuid
 )

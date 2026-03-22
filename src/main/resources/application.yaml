@@ -1,11 +1,22 @@
 ktor:
-    application:
-        modules:
-            - com.haykor.ApplicationKt.module
-    deployment:
-        port: 8080
+  application:
+    modules:
+      - com.haykor.ApplicationKt.module
+  deployment:
+    port: 8080
+db:
+  url: ${DATABASE_URL:r2dbc:postgresql://localhost:5432/db}
+  user: ${DATABASE_USER:-user}
+  password: ${DATABASE_PASSWORD:-password}
 jwt:
   secret: ${JWT_SECRET:-super-secret-development-key-123}
   issuer: "http://0.0.0.0:8080"
   audience: "http://0.0.0.0:8080"
   realm: "Access to protected routes"
+oauth:
+  google:
+    clientId: ${GOOGLE_CLIENT_ID}
+    clientSecret: ${GOOGLE_CLIENT_SECRET}
+#  yandex:
+#    clientId: ${YANDEX_CLIENT_ID}
+#    clientSecret: ${YANDEX_CLIENT_SECRET}

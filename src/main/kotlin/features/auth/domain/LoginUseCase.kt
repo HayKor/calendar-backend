@@ -1,10 +1,12 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package com.haykor.features.auth.domain
 
 import com.haykor.features.auth.data.JwtEncryptor
 import com.haykor.features.auth.presentation.LoginRequest
 import com.haykor.features.user.domain.PasswordHasher
-import com.haykor.features.user.domain.User
 import com.haykor.features.user.domain.UserRepository
+import kotlin.uuid.ExperimentalUuidApi
 
 class LoginUseCase(
     private val authSessionRepository: AuthSessionRepository,
@@ -18,8 +20,8 @@ class LoginUseCase(
 
     suspend fun execute(request: LoginRequest, userIp: String, userAgent: String): Auth {
         val user = userRepository.findByEmail(request.email) ?: throw AuthException.UserNotFound()
-        raiseUserPassword(user, request.password)
-        val authSession = authSessionRepository.createSession(CreateAuthSession(user.id ?: -1, userIp, userAgent))
+        raiseUserPassword(user.hashedPassword, request.password)
+        val authSession = authSessionRepository.createSession(CreateAuthSession(user.id, userIp, userAgent))
 
         return Auth(
             refreshToken = jwtEncryptor.encryptToken(authSession.refreshToken, refreshTokenLifetime),
@@ -29,15 +31,12 @@ class LoginUseCase(
         )
     }
 
-    private fun raiseUserPassword(user: User, password: String) {
-        if (!passwordHasher.check(password, user.hashedPassword)) {
+    private fun raiseUserPassword(hashedPassword: String?, password: String) {
+        if (hashedPassword == null) {
+            throw AuthException.InvalidCredentials()
+        }
+        if (!passwordHasher.check(password, hashedPassword)) {
             throw AuthException.InvalidCredentials()
         }
     }
-
-}
-
-sealed class AuthException(message: String) : Exception(message) {
-    class InvalidCredentials : AuthException("Invalid email or password")
-    class UserNotFound : AuthException("No user found with this email")
 }

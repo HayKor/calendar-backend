@@ -1,12 +1,10 @@
 package com.haykor.features.user.presentation
 
-import com.haykor.features.auth.presentation.authRoutes
 import com.haykor.features.user.domain.CreateUserUseCase
 import com.haykor.features.user.domain.GetUserUseCase
 import io.ktor.http.*
-import io.ktor.server.auth.authenticate
-import io.ktor.server.auth.jwt.JWTPrincipal
-import io.ktor.server.auth.principal
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -23,8 +21,14 @@ fun Route.userRoutes() {
         post {
             val request = call.receive<UserCreateRequest>()
             try {
-                val id = createUserUseCase.execute(request)
-                call.respond(HttpStatusCode.Created, mapOf("id" to id))
+                val user = createUserUseCase.execute(request)
+                call.respond(
+                    HttpStatusCode.Created, UserResponse(
+                        id = user.id,
+                        email = user.email,
+                        name = user.name,
+                    )
+                )
             } catch (e: IllegalArgumentException) {
                 call.respond(HttpStatusCode.Conflict, e.message ?: "Conflict")
             }
