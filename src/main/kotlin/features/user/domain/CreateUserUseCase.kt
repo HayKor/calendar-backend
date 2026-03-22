@@ -6,15 +6,16 @@ class CreateUserUseCase(
     private val repository: UserRepository,
     private val passwordHasher: PasswordHasher
 ) {
-    suspend fun execute(request: UserCreateRequest): Int {
+    suspend fun execute(request: UserCreateRequest): User {
         if (repository.findByEmail(request.email) != null) {
             throw IllegalArgumentException("User already exists")
         }
 
-        val newUser = User(
+        val newUser = CreateUserParams(
             name = request.name,
             email = request.email,
-            hashedPassword = passwordHasher.hash(request.password)
+            hashedPassword = passwordHasher.hash(request.password),
+            isVerified = false
         )
 
         return repository.create(newUser)

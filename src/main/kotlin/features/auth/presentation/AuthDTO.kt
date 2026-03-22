@@ -1,4 +1,4 @@
-package com.haykor.features.auth
+package com.haykor.features.auth.presentation
 
 import kotlinx.serialization.Serializable
 

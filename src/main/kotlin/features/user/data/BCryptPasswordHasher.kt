@@ -12,7 +12,7 @@ class BCryptPasswordHasher : PasswordHasher {
         return try {
             BCrypt.checkpw(password, hashed)
         } catch (e: Exception) {
-            false // Handle cases where the stored hash might be malformed
+            false
         }
     }
 }

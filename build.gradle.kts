@@ -37,16 +37,22 @@ dependencies {
     implementation(libs.ktor.server.config.yaml)
     implementation(libs.ktor.serialization.kotlinx.json)
 
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j)
 
     implementation(libs.exposed.core)
-    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.r2dbc)
+    implementation(libs.r2dbc.postgresql)
     implementation(libs.exposed.datetime)
-    implementation(libs.h2)
-    implementation("org.mindrot:jbcrypt:0.4")
+    implementation(libs.jbcrypt)
     implementation(libs.logback.classic)
+
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation("io.ktor:ktor-server-test-host-jvm:3.4.1")
 }
