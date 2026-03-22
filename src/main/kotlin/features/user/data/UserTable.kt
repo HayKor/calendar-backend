@@ -1,10 +1,10 @@
 package com.haykor.features.user.data
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
+import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
+import org.jetbrains.exposed.v1.datetime.datetime
+import kotlin.time.Clock
 
 object UserTable : IntIdTable("users") {
     val username = varchar("username", 50).uniqueIndex()

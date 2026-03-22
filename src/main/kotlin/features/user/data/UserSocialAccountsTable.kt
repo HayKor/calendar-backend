@@ -1,6 +1,6 @@
 package com.haykor.features.user.data
 
-import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 
 object UserSocialAccountsTable : IntIdTable("user_social_accounts") {
     val user = reference("user_id", UserTable)

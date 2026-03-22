@@ -1,10 +1,13 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package com.haykor.features.auth.data
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import java.util.Date
-import java.util.UUID
+import java.util.*
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 class JwtEncryptor(
     secret: String,
@@ -18,7 +21,7 @@ class JwtEncryptor(
         .withIssuer(issuer)
         .build()
 
-    fun encryptToken(token: UUID, lifetime: Long): String =
+    fun encryptToken(token: Uuid, lifetime: Long): String =
         JWT.create()
             .withAudience(audience)
             .withIssuer(issuer)

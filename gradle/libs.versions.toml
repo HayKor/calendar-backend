@@ -1,10 +1,11 @@
 [versions]
-exposed = "0.61.0"
-h2 = "2.3.232"
+exposed = "1.1.1"
+r2dbc-psql = "1.1.1.RELEASE"
 koin = "4.1.2-Beta1"
 kotlin = "2.3.0"
 ktor = "3.4.1"
 logback = "1.4.14"
+jbcrypt = "0.4"
 
 [libraries]
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
@@ -27,9 +28,12 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
-exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+exposed-r2dbc = { module = "org.jetbrains.exposed:exposed-r2dbc", version.ref = "exposed" }
+r2dbc-postgresql = { module = "org.postgresql:r2dbc-postgresql", version.ref = "r2dbc-psql" }
+jbcrypt = { module = "org.mindrot:jbcrypt", version.ref = "jbcrypt" }
+
 exposed-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
-h2 = { module = "com.h2database:h2", version.ref = "h2" }
+
 
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
 koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }

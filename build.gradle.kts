@@ -45,11 +45,12 @@ dependencies {
     implementation(libs.koin.logger.slf4j)
 
     implementation(libs.exposed.core)
-    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.r2dbc)
+    implementation(libs.r2dbc.postgresql)
     implementation(libs.exposed.datetime)
-    implementation(libs.h2)
-    implementation("org.mindrot:jbcrypt:0.4")
+    implementation(libs.jbcrypt)
     implementation(libs.logback.classic)
+
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)

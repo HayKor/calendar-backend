@@ -3,35 +3,35 @@ package com.haykor.features.user.data
 import com.haykor.features.user.domain.CreateUserParams
 import com.haykor.features.user.domain.User
 import com.haykor.features.user.domain.UserRepository
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insertAndGetId
-import org.jetbrains.exposed.sql.insertReturning
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.singleOrNull
+import org.jetbrains.exposed.v1.core.ResultRow
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.r2dbc.R2dbcDatabase
+import org.jetbrains.exposed.v1.r2dbc.insertReturning
+import org.jetbrains.exposed.v1.r2dbc.selectAll
+import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
 
 class UserRepositoryImpl(
-    private val database: Database
+    private val database: R2dbcDatabase
 ) : UserRepository {
 
-    override suspend fun create(user: CreateUserParams): User = transaction(database) {
-        val id = UserTable.insertAndGetId {
+    override suspend fun create(user: CreateUserParams): User = suspendTransaction(database) {
+        UserTable.insertReturning {
             it[username] = user.name
             it[email] = user.email
             it[hashedPassword] = user.hashedPassword
-        }
-        UserTable.selectAll().where { UserTable.id eq id.value }
-            .map { it.toUser() }
-            .single()
+        }.map { it.toUser() }.single()
     }
 
-    override suspend fun findByEmail(email: String): User? = transaction(database) {
+    override suspend fun findByEmail(email: String): User? = suspendTransaction(database) {
         UserTable.selectAll().where { UserTable.email eq email }
             .map { it.toUser() }
             .singleOrNull()
     }
 
-    override suspend fun findById(id: Int): User? = transaction(database) {
+    override suspend fun findById(id: Int): User? = suspendTransaction(database) {
         UserTable.selectAll().where { UserTable.id eq id }
             .map { it.toUser() }
             .singleOrNull()

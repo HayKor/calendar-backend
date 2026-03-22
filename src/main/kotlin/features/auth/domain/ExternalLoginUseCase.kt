@@ -4,6 +4,7 @@ import com.haykor.features.auth.data.JwtEncryptor
 import com.haykor.features.auth.presentation.GoogleUserDTO
 import com.haykor.features.user.domain.CreateUserParams
 import com.haykor.features.user.domain.UserRepository
+import kotlin.uuid.ExperimentalUuidApi
 
 class ExternalLoginUseCase(
     private val authSessionRepository: AuthSessionRepository,
@@ -14,6 +15,7 @@ class ExternalLoginUseCase(
     private val accessTokenLifetime = 30L * 60L * 1000L // 30 mins
     private val refreshTokenLifetime = 30L * 24L * 60L * 60L * 1000L // 30 days // TODO: change to env
 
+    @OptIn(ExperimentalUuidApi::class)
     suspend fun execute(googleUserDTO: GoogleUserDTO, userIp: String, userAgent: String): Auth {
         val user = userRepository.findByEmail(googleUserDTO.email) ?: userRepository.create(
             CreateUserParams(
