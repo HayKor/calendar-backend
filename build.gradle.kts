@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.ktor.server.openapi)
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.config.yaml)
+    implementation(libs.ktor.server.call.logging)
     implementation(libs.ktor.serialization.kotlinx.json)
 
     implementation(libs.ktor.client.core)

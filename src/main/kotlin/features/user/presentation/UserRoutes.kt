@@ -1,5 +1,6 @@
 package com.haykor.features.user.presentation
 
+import com.haykor.core.exception.BadRequest
 import com.haykor.features.user.domain.CreateUserUseCase
 import com.haykor.features.user.domain.GetUserUseCase
 import io.ktor.http.*
@@ -34,8 +35,8 @@ fun Route.userRoutes() {
             }
         }
         get("/{id}") {
-            val id = call.parameters["id"]?.toInt() ?: return@get call.respond(HttpStatusCode.BadRequest)
-            val user = getUserUseCase.execute(id) ?: return@get call.respond(HttpStatusCode.NotFound)
+            val id = call.parameters["id"]?.toInt() ?: throw BadRequest("Invalid id")
+            val user = getUserUseCase.execute(id) ?: throw UserNotFound()
             call.respond(HttpStatusCode.OK, user)
         }
         authenticate("auth-jwt") {

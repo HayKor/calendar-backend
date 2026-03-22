@@ -8,6 +8,7 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+    configureCallLogging()
     configureKoin()
     configureAuth(environment.config)
     configureDatabases()
