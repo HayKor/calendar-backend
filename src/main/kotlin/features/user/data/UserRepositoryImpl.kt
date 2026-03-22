@@ -7,9 +7,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.singleOrNull
 import org.jetbrains.exposed.v1.core.ResultRow
+import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.r2dbc.R2dbcDatabase
 import org.jetbrains.exposed.v1.r2dbc.insertReturning
+import org.jetbrains.exposed.v1.r2dbc.select
 import org.jetbrains.exposed.v1.r2dbc.selectAll
 import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
 
@@ -33,6 +35,17 @@ class UserRepositoryImpl(
 
     override suspend fun findById(id: Int): User? = suspendTransaction(database) {
         UserTable.selectAll().where { UserTable.id eq id }
+            .map { it.toUser() }
+            .singleOrNull()
+    }
+
+    override suspend fun findBySocials(provider: String, externalId: String): User? = suspendTransaction(database) {
+        (UserTable innerJoin UserSocialAccountsTable)
+            .select(UserTable.columns)
+            .where {
+                (UserSocialAccountsTable.provider eq provider) and
+                        (UserSocialAccountsTable.externalId eq externalId)
+            }
             .map { it.toUser() }
             .singleOrNull()
     }
