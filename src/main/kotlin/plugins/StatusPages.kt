@@ -24,6 +24,7 @@ fun Application.configureStatusPages() {
         exception<Throwable> { call, cause ->
             // TODO: Log 'cause.stackTraceToString()'
             println("CRITICAL ERROR: ${cause.message}")
+            println(cause.stackTraceToString())
 
             call.respond(
                 status = HttpStatusCode.InternalServerError,
