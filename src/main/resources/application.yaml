@@ -13,6 +13,8 @@ jwt:
   issuer: "http://0.0.0.0:8080"
   audience: "http://0.0.0.0:8080"
   realm: "Access to protected routes"
+  access_token_lifetime_minutes: 15
+  refresh_token_lifetime_days: 15
 oauth:
   google:
     clientId: ${GOOGLE_CLIENT_ID}

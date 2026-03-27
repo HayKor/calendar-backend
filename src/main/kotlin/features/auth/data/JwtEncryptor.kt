@@ -10,13 +10,12 @@ import kotlin.uuid.ExperimentalUuidApi
 
 class JwtEncryptor(
     secret: String,
+    val accessTokenLifetime: Long,
+    val refreshTokenLifetime: Long,
     private val issuer: String,
-    private val audience: String
+    private val audience: String,
 ) {
     private val algorithm = Algorithm.HMAC256(secret)
-
-    val accessTokenLifetime = 30L * 60L * 1000L // 30 mins
-    val refreshTokenLifetime = 30L * 24L * 60L * 60L * 1000L // 30 days // TODO: change to env
 
     val verifier: JWTVerifier = JWT.require(algorithm)
         .withAudience(audience)

@@ -89,6 +89,14 @@ fun Route.authRoutes() {
                 }.body<GoogleUserDTO>()
 
                 val auth = externalLoginUseCase(googleUser, userIp, userAgent)
+                call.response.cookies.append(
+                    name = "refresh_token",
+                    value = auth.refreshToken.toString(),
+                    httpOnly = true,
+                    secure = true,
+                    path = "/api/auth",
+                    maxAge = auth.refreshTokenExpiresIn
+                )
                 call.respond(
                     HttpStatusCode.OK, TokenResponse(
                         auth.accessToken,

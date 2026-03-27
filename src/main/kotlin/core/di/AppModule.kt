@@ -1,5 +1,6 @@
 package com.haykor.core.di
 
+import com.haykor.features.auth.data.JwtEncryptor
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -27,4 +28,15 @@ fun appModule(config: ApplicationConfig) = module {
             }
         }
     } onClose { it?.close() }
+    single {
+        JwtEncryptor(
+            secret = config.property("jwt.secret").getString(),
+            issuer = config.property("jwt.issuer").getString(),
+            audience = config.property("jwt.audience").getString(),
+            accessTokenLifetime = config.property("jwt.access_token_lifetime_minutes")
+                .getAs<Long>() * 60L * 1000L,
+            refreshTokenLifetime = config.property("jwt.refresh_token_lifetime_days")
+                .getAs<Long>() * 24L * 60L * 60L * 1000L,
+        )
+    }
 }
