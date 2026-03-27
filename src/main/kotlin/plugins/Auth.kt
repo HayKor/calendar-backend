@@ -1,5 +1,6 @@
 package com.haykor.plugins
 
+import com.haykor.core.presentation.ErrorResponse
 import com.haykor.features.auth.data.JwtEncryptor
 import io.ktor.client.*
 import io.ktor.http.*
@@ -7,6 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.config.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import org.koin.ktor.ext.inject
 
@@ -23,14 +25,21 @@ private fun Application.configureSecurity() {
             realm = "Access to authorized endpoints"
             verifier(jwtEncryptor.verifier)
             validate { credential ->
-                if (credential.payload.getClaim("token").asString() != null) {
+                if (credential.payload.subject != null) {
                     JWTPrincipal(credential.payload)
                 } else {
                     null
                 }
             }
             challenge { defaultScheme, realm ->
-                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
+                call.respond(
+                    status = HttpStatusCode.Unauthorized,
+                    message = ErrorResponse(
+                        error = "Token is not valid or has expired",
+                        path = call.request.path(),
+                        status = HttpStatusCode.Unauthorized.value
+                    )
+                )
             }
         }
     }

@@ -9,11 +9,11 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     configureCallLogging()
+    configureSerialization()
     configureKoin()
     configureAuth(environment.config)
     configureDatabases()
     configureSwagger()
-    configureSerialization()
     configureStatusPages()
 
     configureRoutes()

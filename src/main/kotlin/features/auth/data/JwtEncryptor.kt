@@ -7,7 +7,6 @@ import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import java.util.*
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 class JwtEncryptor(
     secret: String,
@@ -16,16 +15,19 @@ class JwtEncryptor(
 ) {
     private val algorithm = Algorithm.HMAC256(secret)
 
+    val accessTokenLifetime = 30L * 60L * 1000L // 30 mins
+    val refreshTokenLifetime = 30L * 24L * 60L * 60L * 1000L // 30 days // TODO: change to env
+
     val verifier: JWTVerifier = JWT.require(algorithm)
         .withAudience(audience)
         .withIssuer(issuer)
         .build()
 
-    fun encryptToken(token: Uuid, lifetime: Long): String =
+    fun encryptAccessToken(userId: Int): String =
         JWT.create()
             .withAudience(audience)
             .withIssuer(issuer)
-            .withClaim("token", token.toString())
-            .withExpiresAt(Date(System.currentTimeMillis() + lifetime))
+            .withSubject(userId.toString())
+            .withExpiresAt(Date(System.currentTimeMillis() + accessTokenLifetime))
             .sign(algorithm)
 }

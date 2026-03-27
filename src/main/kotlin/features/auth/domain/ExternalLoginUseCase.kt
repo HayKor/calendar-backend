@@ -14,11 +14,8 @@ class ExternalLoginUseCase(
     private val jwtEncryptor: JwtEncryptor,
 ) {
 
-    private val accessTokenLifetime = 30L * 60L * 1000L // 30 mins
-    private val refreshTokenLifetime = 30L * 24L * 60L * 60L * 1000L // 30 days // TODO: change to env
-
     @OptIn(ExperimentalUuidApi::class)
-    suspend fun execute(googleUserDTO: GoogleUserDTO, userIp: String, userAgent: String): Auth {
+    suspend operator fun invoke(googleUserDTO: GoogleUserDTO, userIp: String, userAgent: String): Auth {
         // 1. Try to find the user by their Google ID directly
         val user = userRepository.findBySocials("google", googleUserDTO.id)
             ?: userRepository.findByEmail(googleUserDTO.email)?.also {
@@ -32,17 +29,17 @@ class ExternalLoginUseCase(
                 userSocialsRepository.assignSocialsToUser(it, "google", googleUserDTO.id)
             }
         val authSession = authSessionRepository.createSession(
-            CreateAuthSession(
+            CreateAuthSessionParams(
                 userId = user.id,
                 userIp = userIp,
                 userAgent = userAgent
             )
         )
         return Auth(
-            refreshToken = jwtEncryptor.encryptToken(authSession.refreshToken, refreshTokenLifetime),
-            accessToken = jwtEncryptor.encryptToken(authSession.accessToken, accessTokenLifetime),
-            refreshTokenExpiresIn = refreshTokenLifetime,
-            accessTokenExpiresIn = accessTokenLifetime
+            refreshToken = authSession.refreshToken,
+            accessToken = jwtEncryptor.encryptAccessToken(user.id),
+            refreshTokenExpiresIn = jwtEncryptor.refreshTokenLifetime,
+            accessTokenExpiresIn = jwtEncryptor.accessTokenLifetime
         )
     }
 }

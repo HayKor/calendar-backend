@@ -1,12 +1,9 @@
 package com.haykor.features.user.domain
 
-import com.haykor.features.user.presentation.UserResponse
-
 class GetUserUseCase(
     private val repository: UserRepository
 ) {
-    suspend fun execute(id: Int): UserResponse? {
-        val user = repository.findById(id) ?: return null
-        return UserResponse(id, user.name, user.email)
+    suspend operator fun invoke(id: Int): User {
+        return repository.findById(id) ?: throw UserException.UserNotFound()
     }
 }

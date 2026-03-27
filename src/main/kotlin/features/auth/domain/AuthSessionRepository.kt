@@ -6,6 +6,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 interface AuthSessionRepository {
-    suspend fun createSession(session: CreateAuthSession): AuthSession
-    suspend fun findAuthSession(refreshTokenUuid: Uuid): AuthSession?
+    suspend fun createSession(params: CreateAuthSessionParams): AuthSession
+    suspend fun findAuthSession(refreshToken: Uuid): AuthSession?
+    suspend fun updateAuthSession(refreshToken: Uuid, params: UpdateSessionParams): AuthSession?
 }
