@@ -41,20 +41,22 @@ fun Route.authRoutes() {
                 httpOnly = true,
                 secure = true,
                 path = "/api/auth",
-                maxAge = auth.refreshTokenExpiresIn
+                maxAge = auth.refreshTokenExpiresIn,
             )
             call.respond(
-                HttpStatusCode.OK, TokenResponse(
+                HttpStatusCode.OK,
+                TokenResponse(
                     auth.accessToken,
                     auth.refreshToken.toString(),
                     auth.accessTokenExpiresIn,
-                    auth.refreshTokenExpiresIn
-                )
+                    auth.refreshTokenExpiresIn,
+                ),
             )
         }
         post("/refresh_tokens") {
-            val refreshToken = call.request.cookies["refresh_token"]
-                ?: throw AuthException.InvalidToken()
+            val refreshToken =
+                call.request.cookies["refresh_token"]
+                    ?: throw AuthException.InvalidToken()
             val userIp = call.request.origin.remoteAddress
             val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
             val auth = refreshTokensUseCase(Uuid.parse(refreshToken), userIp, userAgent)
@@ -64,15 +66,16 @@ fun Route.authRoutes() {
                 httpOnly = true,
                 secure = true,
                 path = "/api/auth",
-                maxAge = auth.refreshTokenExpiresIn
+                maxAge = auth.refreshTokenExpiresIn,
             )
             call.respond(
-                HttpStatusCode.OK, TokenResponse(
+                HttpStatusCode.OK,
+                TokenResponse(
                     auth.accessToken,
                     auth.refreshToken.toString(),
                     auth.accessTokenExpiresIn,
-                    auth.refreshTokenExpiresIn
-                )
+                    auth.refreshTokenExpiresIn,
+                ),
             )
         }
         authenticate("auth-oauth-google") {
@@ -84,9 +87,11 @@ fun Route.authRoutes() {
                 val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
                 val userIp = call.request.origin.remoteAddress
 
-                val googleUser = httpClient.get("https://www.googleapis.com/oauth2/v3/userinfo") {
-                    header(HttpHeaders.Authorization, "Bearer ${principal.accessToken}")
-                }.body<GoogleUserDTO>()
+                val googleUser =
+                    httpClient
+                        .get("https://www.googleapis.com/oauth2/v3/userinfo") {
+                            header(HttpHeaders.Authorization, "Bearer ${principal.accessToken}")
+                        }.body<GoogleUserDTO>()
 
                 val auth = externalLoginUseCase(googleUser, userIp, userAgent)
                 call.response.cookies.append(
@@ -95,15 +100,16 @@ fun Route.authRoutes() {
                     httpOnly = true,
                     secure = true,
                     path = "/api/auth",
-                    maxAge = auth.refreshTokenExpiresIn
+                    maxAge = auth.refreshTokenExpiresIn,
                 )
                 call.respond(
-                    HttpStatusCode.OK, TokenResponse(
+                    HttpStatusCode.OK,
+                    TokenResponse(
                         auth.accessToken,
                         auth.refreshToken.toString(),
                         auth.accessTokenExpiresIn,
-                        auth.refreshTokenExpiresIn
-                    )
+                        auth.refreshTokenExpiresIn,
+                    ),
                 )
             }
         }

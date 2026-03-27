@@ -15,8 +15,11 @@ class LoginUseCase(
     private val passwordHasher: PasswordHasher,
     private val jwtEncryptor: JwtEncryptor,
 ) {
-
-    suspend operator fun invoke(request: LoginRequest, userIp: String, userAgent: String): Auth {
+    suspend operator fun invoke(
+        request: LoginRequest,
+        userIp: String,
+        userAgent: String,
+    ): Auth {
         val user = userRepository.findByEmail(request.email) ?: throw UserException.UserNotFound()
         raiseUserPassword(user.hashedPassword, request.password)
         val authSession = authSessionRepository.createSession(CreateAuthSessionParams(user.id, userIp, userAgent))
@@ -25,11 +28,14 @@ class LoginUseCase(
             refreshToken = authSession.refreshToken,
             accessToken = jwtEncryptor.encryptAccessToken(user.id),
             refreshTokenExpiresIn = jwtEncryptor.refreshTokenLifetime,
-            accessTokenExpiresIn = jwtEncryptor.accessTokenLifetime
+            accessTokenExpiresIn = jwtEncryptor.accessTokenLifetime,
         )
     }
 
-    private fun raiseUserPassword(hashedPassword: String?, password: String) {
+    private fun raiseUserPassword(
+        hashedPassword: String?,
+        password: String,
+    ) {
         if (hashedPassword == null) {
             throw AuthException.InvalidCredentials()
         }

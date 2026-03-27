@@ -14,12 +14,12 @@ data class CreateAuthSessionParams(
 data class UpdateSessionParams(
     val refreshToken: Uuid,
     val userIp: String,
-    val userAgent: String
+    val userAgent: String,
 )
 
 data class AuthSession(
     val userId: Int,
     val userIp: String,
     val userAgent: String,
-    val refreshToken: Uuid
+    val refreshToken: Uuid,
 )

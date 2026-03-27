@@ -12,5 +12,5 @@ data class GoogleUserDTO(
     @SerialName("given_name") val firstName: String,
     @SerialName("family_name") val lastName: String? = null,
     val picture: String? = null,
-    val locale: String? = null
+    val locale: String? = null,
 )

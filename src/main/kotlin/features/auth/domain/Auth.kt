@@ -9,5 +9,5 @@ data class Auth(
     val refreshToken: Uuid,
     val accessToken: String,
     val refreshTokenExpiresIn: Long,
-    val accessTokenExpiresIn: Long
+    val accessTokenExpiresIn: Long,
 )

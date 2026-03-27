@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
     alias(libs.plugins.kotlin.plugin.serialization)
+    alias(libs.plugins.ktlint)
 }
 
 group = "com.haykor"
@@ -53,7 +54,6 @@ dependencies {
     implementation(libs.exposed.datetime)
     implementation(libs.jbcrypt)
     implementation(libs.logback.classic)
-
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)

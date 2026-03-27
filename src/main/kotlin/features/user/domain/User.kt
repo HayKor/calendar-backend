@@ -4,7 +4,7 @@ data class CreateUserParams(
     val name: String,
     val email: String,
     val hashedPassword: String? = null,
-    val isVerified: Boolean
+    val isVerified: Boolean,
 )
 
 data class User(
@@ -12,5 +12,5 @@ data class User(
     val name: String,
     val email: String,
     val hashedPassword: String? = null,
-    val isVerified: Boolean? = null
+    val isVerified: Boolean? = null,
 )

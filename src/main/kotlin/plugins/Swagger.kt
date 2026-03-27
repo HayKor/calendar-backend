@@ -11,9 +11,10 @@ fun Application.configureSwagger() {
     routing {
         swaggerUI("/docs") {
             info = OpenApiInfo(title = "Calendar API", version = "0.0.1")
-            source = OpenApiDocSource.Routing(ContentType.Application.Json) {
-                routingRoot.descendants()
-            }
+            source =
+                OpenApiDocSource.Routing(ContentType.Application.Json) {
+                    routingRoot.descendants()
+                }
         }
     }
 }

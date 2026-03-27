@@ -13,7 +13,7 @@ fun Application.configureKoin() {
         modules(
             appModule(environment.config),
             authModule(environment.config),
-            userModule
+            userModule,
         )
     }
 }

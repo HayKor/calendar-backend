@@ -10,11 +10,12 @@ import org.jetbrains.exposed.v1.r2dbc.SchemaUtils
 import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
 
 fun Application.configureDatabases() {
-    val database = R2dbcDatabase.connect(
-        url = environment.config.property("db.url").getString(),
-        user = environment.config.property("db.user").getString(),
-        password = environment.config.property("db.password").getString()
-    )
+    val database =
+        R2dbcDatabase.connect(
+            url = environment.config.property("db.url").getString(),
+            user = environment.config.property("db.user").getString(),
+            password = environment.config.property("db.password").getString(),
+        )
     runBlocking {
         suspendTransaction(database) {
             SchemaUtils.create(UserTable, UserSocialAccountsTable, AuthSessionTable)

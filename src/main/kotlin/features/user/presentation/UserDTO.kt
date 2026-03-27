@@ -6,12 +6,12 @@ import kotlinx.serialization.Serializable
 data class UserCreateRequest(
     val name: String,
     val email: String,
-    val password: String
+    val password: String,
 )
 
 @Serializable
 data class UserResponse(
     val id: Int,
     val name: String,
-    val email: String
+    val email: String,
 )

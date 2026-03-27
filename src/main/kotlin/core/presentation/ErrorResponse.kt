@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class ErrorResponse(
     val error: String,
     val path: String,
-    val status: Int
+    val status: Int,
 )

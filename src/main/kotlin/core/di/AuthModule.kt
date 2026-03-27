@@ -10,7 +10,6 @@ import org.koin.core.module.dsl.new
 import org.koin.dsl.module
 
 fun authModule(config: ApplicationConfig) = module {
-
     single<AuthSessionRepository> { AuthSessionRepositoryImpl(get()) }
     single { new(::LoginUseCase) }
     single { new(::ExternalLoginUseCase) }

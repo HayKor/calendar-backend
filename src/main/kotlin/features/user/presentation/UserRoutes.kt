@@ -23,22 +23,24 @@ fun Route.userRoutes() {
             val request = call.receive<UserCreateRequest>()
             val user = createUserUseCase(request)
             call.respond(
-                HttpStatusCode.Created, UserResponse(
+                HttpStatusCode.Created,
+                UserResponse(
                     id = user.id,
                     email = user.email,
                     name = user.name,
-                )
+                ),
             )
         }
         get("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull() ?: throw BadRequest("Invalid id")
             val user = getUserUseCase(id)
             call.respond(
-                HttpStatusCode.OK, UserResponse(
+                HttpStatusCode.OK,
+                UserResponse(
                     id = user.id,
                     email = user.email,
-                    name = user.name
-                )
+                    name = user.name,
+                ),
             )
         }
         authenticate("auth-jwt") {

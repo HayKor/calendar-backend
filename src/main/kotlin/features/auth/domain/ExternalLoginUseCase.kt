@@ -13,33 +13,39 @@ class ExternalLoginUseCase(
     private val userSocialsRepository: UserSocialsRepository,
     private val jwtEncryptor: JwtEncryptor,
 ) {
-
     @OptIn(ExperimentalUuidApi::class)
-    suspend operator fun invoke(googleUserDTO: GoogleUserDTO, userIp: String, userAgent: String): Auth {
+    suspend operator fun invoke(
+        googleUserDTO: GoogleUserDTO,
+        userIp: String,
+        userAgent: String,
+    ): Auth {
         // 1. Try to find the user by their Google ID directly
-        val user = userRepository.findBySocials("google", googleUserDTO.id)
-            ?: userRepository.findByEmail(googleUserDTO.email)?.also {
-                // 2. Found by email? Link the social ID so next time step 1 works
-                userSocialsRepository.assignSocialsToUser(it, "google", googleUserDTO.id)
-            }
-            ?: userRepository.create(
-                CreateUserParams(googleUserDTO.email, googleUserDTO.name, isVerified = true)
-            ).also {
-                // 3. Brand new? Create and link
-                userSocialsRepository.assignSocialsToUser(it, "google", googleUserDTO.id)
-            }
-        val authSession = authSessionRepository.createSession(
-            CreateAuthSessionParams(
-                userId = user.id,
-                userIp = userIp,
-                userAgent = userAgent
+        val user =
+            userRepository.findBySocials("google", googleUserDTO.id)
+                ?: userRepository.findByEmail(googleUserDTO.email)?.also {
+                    // 2. Found by email? Link the social ID so next time step 1 works
+                    userSocialsRepository.assignSocialsToUser(it, "google", googleUserDTO.id)
+                }
+                ?: userRepository
+                    .create(
+                        CreateUserParams(googleUserDTO.email, googleUserDTO.name, isVerified = true),
+                    ).also {
+                        // 3. Brand new? Create and link
+                        userSocialsRepository.assignSocialsToUser(it, "google", googleUserDTO.id)
+                    }
+        val authSession =
+            authSessionRepository.createSession(
+                CreateAuthSessionParams(
+                    userId = user.id,
+                    userIp = userIp,
+                    userAgent = userAgent,
+                ),
             )
-        )
         return Auth(
             refreshToken = authSession.refreshToken,
             accessToken = jwtEncryptor.encryptAccessToken(user.id),
             refreshTokenExpiresIn = jwtEncryptor.refreshTokenLifetime,
-            accessTokenExpiresIn = jwtEncryptor.accessTokenLifetime
+            accessTokenExpiresIn = jwtEncryptor.accessTokenLifetime,
         )
     }
 }

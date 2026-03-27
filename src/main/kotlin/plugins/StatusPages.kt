@@ -14,11 +14,12 @@ fun Application.configureStatusPages() {
         exception<AppException> { call, cause ->
             call.respond(
                 status = cause.statusCode,
-                message = ErrorResponse(
+                message =
+                ErrorResponse(
                     error = cause.message,
                     path = call.request.path(),
                     status = cause.statusCode.value,
-                )
+                ),
             )
         }
         exception<Throwable> { call, cause ->
@@ -28,11 +29,12 @@ fun Application.configureStatusPages() {
 
             call.respond(
                 status = HttpStatusCode.InternalServerError,
-                message = ErrorResponse(
+                message =
+                ErrorResponse(
                     error = "An unexpected internal server error occurred.",
                     path = call.request.path(),
-                    status = 500
-                )
+                    status = 500,
+                ),
             )
         }
     }

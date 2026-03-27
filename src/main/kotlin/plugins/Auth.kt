@@ -34,11 +34,12 @@ private fun Application.configureSecurity() {
             challenge { defaultScheme, realm ->
                 call.respond(
                     status = HttpStatusCode.Unauthorized,
-                    message = ErrorResponse(
+                    message =
+                    ErrorResponse(
                         error = "Token is not valid or has expired",
                         path = call.request.path(),
-                        status = HttpStatusCode.Unauthorized.value
-                    )
+                        status = HttpStatusCode.Unauthorized.value,
+                    ),
                 )
             }
         }
@@ -59,7 +60,7 @@ private fun Application.configureOAuth(config: ApplicationConfig) {
                     requestMethod = HttpMethod.Post,
                     clientId = config.property("oauth.google.clientId").getString(),
                     clientSecret = config.property("oauth.google.clientSecret").getString(),
-                    defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.email", "profile")
+                    defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.email", "profile"),
                 )
             }
             client = applicationHttpClient

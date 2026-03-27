@@ -16,37 +16,44 @@ import org.jetbrains.exposed.v1.r2dbc.selectAll
 import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
 
 class UserRepositoryImpl(
-    private val database: R2dbcDatabase
+    private val database: R2dbcDatabase,
 ) : UserRepository {
-
     override suspend fun create(user: CreateUserParams): User = suspendTransaction(database) {
-        UserTable.insertReturning {
-            it[username] = user.name
-            it[email] = user.email
-            it[hashedPassword] = user.hashedPassword
-        }.map { it.toUser() }.single()
+        UserTable
+            .insertReturning {
+                it[username] = user.name
+                it[email] = user.email
+                it[hashedPassword] = user.hashedPassword
+            }.map { it.toUser() }
+            .single()
     }
 
     override suspend fun findByEmail(email: String): User? = suspendTransaction(database) {
-        UserTable.selectAll().where { UserTable.email eq email }
+        UserTable
+            .selectAll()
+            .where { UserTable.email eq email }
             .map { it.toUser() }
             .singleOrNull()
     }
 
     override suspend fun findById(id: Int): User? = suspendTransaction(database) {
-        UserTable.selectAll().where { UserTable.id eq id }
+        UserTable
+            .selectAll()
+            .where { UserTable.id eq id }
             .map { it.toUser() }
             .singleOrNull()
     }
 
-    override suspend fun findBySocials(provider: String, externalId: String): User? = suspendTransaction(database) {
+    override suspend fun findBySocials(
+        provider: String,
+        externalId: String,
+    ): User? = suspendTransaction(database) {
         (UserTable innerJoin UserSocialAccountsTable)
             .select(UserTable.columns)
             .where {
                 (UserSocialAccountsTable.provider eq provider) and
-                        (UserSocialAccountsTable.externalId eq externalId)
-            }
-            .map { it.toUser() }
+                    (UserSocialAccountsTable.externalId eq externalId)
+            }.map { it.toUser() }
             .singleOrNull()
     }
 
@@ -55,6 +62,6 @@ class UserRepositoryImpl(
         name = this[UserTable.username],
         email = this[UserTable.email],
         hashedPassword = this[UserTable.hashedPassword],
-        isVerified = this[UserTable.isVerified]
+        isVerified = this[UserTable.isVerified],
     )
 }

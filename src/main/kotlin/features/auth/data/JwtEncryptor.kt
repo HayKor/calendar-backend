@@ -17,16 +17,18 @@ class JwtEncryptor(
 ) {
     private val algorithm = Algorithm.HMAC256(secret)
 
-    val verifier: JWTVerifier = JWT.require(algorithm)
-        .withAudience(audience)
-        .withIssuer(issuer)
-        .build()
-
-    fun encryptAccessToken(userId: Int): String =
-        JWT.create()
+    val verifier: JWTVerifier =
+        JWT
+            .require(algorithm)
             .withAudience(audience)
             .withIssuer(issuer)
-            .withSubject(userId.toString())
-            .withExpiresAt(Date(System.currentTimeMillis() + accessTokenLifetime))
-            .sign(algorithm)
+            .build()
+
+    fun encryptAccessToken(userId: Int): String = JWT
+        .create()
+        .withAudience(audience)
+        .withIssuer(issuer)
+        .withSubject(userId.toString())
+        .withExpiresAt(Date(System.currentTimeMillis() + accessTokenLifetime))
+        .sign(algorithm)
 }
