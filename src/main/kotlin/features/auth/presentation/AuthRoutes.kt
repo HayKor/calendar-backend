@@ -50,9 +50,7 @@ fun Route.authRoutes() {
                 // automatic redirect to Google login page and then to /callback/google
             }
             get("/callback/google") {
-                val principal = call.principal<OAuthAccessTokenResponse.OAuth2>() ?: return@get call.respond(
-                    HttpStatusCode.Unauthorized
-                )
+                val principal = call.principal<OAuthAccessTokenResponse.OAuth2>() ?: throw UserUnauthorizedException()
                 val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
                 val userIp = call.request.origin.remoteAddress
 
