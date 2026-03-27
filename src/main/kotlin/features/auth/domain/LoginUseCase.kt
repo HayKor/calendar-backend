@@ -5,6 +5,7 @@ package com.haykor.features.auth.domain
 import com.haykor.features.auth.data.JwtEncryptor
 import com.haykor.features.auth.presentation.LoginRequest
 import com.haykor.features.user.domain.PasswordHasher
+import com.haykor.features.user.domain.UserException
 import com.haykor.features.user.domain.UserRepository
 import kotlin.uuid.ExperimentalUuidApi
 
@@ -15,19 +16,16 @@ class LoginUseCase(
     private val jwtEncryptor: JwtEncryptor,
 ) {
 
-    private val accessTokenLifetime = 30L * 60L * 1000L // 30 mins
-    private val refreshTokenLifetime = 30L * 24L * 60L * 60L * 1000L // 30 days // TODO: change to env
-
-    suspend fun execute(request: LoginRequest, userIp: String, userAgent: String): Auth {
-        val user = userRepository.findByEmail(request.email) ?: throw AuthException.UserNotFound()
+    suspend operator fun invoke(request: LoginRequest, userIp: String, userAgent: String): Auth {
+        val user = userRepository.findByEmail(request.email) ?: throw UserException.UserNotFound()
         raiseUserPassword(user.hashedPassword, request.password)
-        val authSession = authSessionRepository.createSession(CreateAuthSession(user.id, userIp, userAgent))
+        val authSession = authSessionRepository.createSession(CreateAuthSessionParams(user.id, userIp, userAgent))
 
         return Auth(
-            refreshToken = jwtEncryptor.encryptToken(authSession.refreshToken, refreshTokenLifetime),
-            accessToken = jwtEncryptor.encryptToken(authSession.accessToken, accessTokenLifetime),
-            refreshTokenExpiresIn = refreshTokenLifetime,
-            accessTokenExpiresIn = accessTokenLifetime
+            refreshToken = authSession.refreshToken,
+            accessToken = jwtEncryptor.encryptAccessToken(user.id),
+            refreshTokenExpiresIn = jwtEncryptor.refreshTokenLifetime,
+            accessTokenExpiresIn = jwtEncryptor.accessTokenLifetime
         )
     }
 

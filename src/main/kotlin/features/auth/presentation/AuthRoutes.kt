@@ -1,7 +1,11 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package com.haykor.features.auth.presentation
 
+import com.haykor.features.auth.domain.AuthException
 import com.haykor.features.auth.domain.ExternalLoginUseCase
 import com.haykor.features.auth.domain.LoginUseCase
+import com.haykor.features.auth.domain.RefreshTokensUseCase
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -12,10 +16,13 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 fun Route.authRoutes() {
     val loginUseCase by inject<LoginUseCase>()
     val externalLoginUseCase by inject<ExternalLoginUseCase>()
+    val refreshTokensUseCase by inject<RefreshTokensUseCase>()
     val httpClient by inject<HttpClient>()
 
     /**
@@ -27,10 +34,10 @@ fun Route.authRoutes() {
             val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
             val userIp = call.request.origin.remoteAddress
 
-            val auth = loginUseCase.execute(request, userIp, userAgent)
+            val auth = loginUseCase(request, userIp, userAgent)
             call.response.cookies.append(
                 name = "refresh_token",
-                value = auth.refreshToken,
+                value = auth.refreshToken.toString(),
                 httpOnly = true,
                 secure = true,
                 path = "/api/auth",
@@ -39,7 +46,30 @@ fun Route.authRoutes() {
             call.respond(
                 HttpStatusCode.OK, TokenResponse(
                     auth.accessToken,
-                    auth.refreshToken,
+                    auth.refreshToken.toString(),
+                    auth.accessTokenExpiresIn,
+                    auth.refreshTokenExpiresIn
+                )
+            )
+        }
+        post("/refresh_tokens") {
+            val refreshToken = call.request.cookies["refresh_token"]
+                ?: throw AuthException.InvalidToken()
+            val userIp = call.request.origin.remoteAddress
+            val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
+            val auth = refreshTokensUseCase(Uuid.parse(refreshToken), userIp, userAgent)
+            call.response.cookies.append(
+                name = "refresh_token",
+                value = auth.refreshToken.toString(),
+                httpOnly = true,
+                secure = true,
+                path = "/api/auth",
+                maxAge = auth.refreshTokenExpiresIn
+            )
+            call.respond(
+                HttpStatusCode.OK, TokenResponse(
+                    auth.accessToken,
+                    auth.refreshToken.toString(),
                     auth.accessTokenExpiresIn,
                     auth.refreshTokenExpiresIn
                 )
@@ -50,7 +80,7 @@ fun Route.authRoutes() {
                 // automatic redirect to Google login page and then to /callback/google
             }
             get("/callback/google") {
-                val principal = call.principal<OAuthAccessTokenResponse.OAuth2>() ?: throw UserUnauthorizedException()
+                val principal = call.principal<OAuthAccessTokenResponse.OAuth2>() ?: throw AuthException.InvalidToken()
                 val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
                 val userIp = call.request.origin.remoteAddress
 
@@ -58,11 +88,11 @@ fun Route.authRoutes() {
                     header(HttpHeaders.Authorization, "Bearer ${principal.accessToken}")
                 }.body<GoogleUserDTO>()
 
-                val auth = externalLoginUseCase.execute(googleUser, userIp, userAgent)
+                val auth = externalLoginUseCase(googleUser, userIp, userAgent)
                 call.respond(
                     HttpStatusCode.OK, TokenResponse(
                         auth.accessToken,
-                        auth.refreshToken,
+                        auth.refreshToken.toString(),
                         auth.accessTokenExpiresIn,
                         auth.refreshTokenExpiresIn
                     )

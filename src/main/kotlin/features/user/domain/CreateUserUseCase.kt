@@ -6,9 +6,9 @@ class CreateUserUseCase(
     private val repository: UserRepository,
     private val passwordHasher: PasswordHasher
 ) {
-    suspend fun execute(request: UserCreateRequest): User {
+    suspend operator fun invoke(request: UserCreateRequest): User {
         if (repository.findByEmail(request.email) != null) {
-            throw UserAlreadyExists()
+            throw UserException.UserAlreadyExists()
         }
 
         val newUser = CreateUserParams(
