@@ -1,4 +1,4 @@
-package com.haykor.di
+package com.haykor.core.di
 
 import com.haykor.features.user.data.BCryptPasswordHasher
 import com.haykor.features.user.data.UserRepositoryImpl
@@ -12,6 +12,6 @@ val userModule = module {
     single<UserSocialsRepository> { UserSocialsRepositoryImpl(get()) }
     single<PasswordHasher> { BCryptPasswordHasher() }
 
-    factory { new(::CreateUserUseCase) }
-    factory { new(::GetUserUseCase) }
+    single { new(::CreateUserUseCase) }
+    single { new(::GetUserUseCase) }
 }

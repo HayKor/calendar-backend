@@ -1,8 +1,8 @@
 package com.haykor.plugins
 
-import com.haykor.di.appModule
-import com.haykor.di.authModule
-import com.haykor.di.userModule
+import com.haykor.core.di.appModule
+import com.haykor.core.di.authModule
+import com.haykor.core.di.userModule
 import io.ktor.server.application.*
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger

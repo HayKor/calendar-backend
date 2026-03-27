@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.exposed.core)
     implementation(libs.exposed.r2dbc)
     implementation(libs.r2dbc.postgresql)
+    implementation(libs.r2dbc.pool)
     implementation(libs.exposed.datetime)
     implementation(libs.jbcrypt)
     implementation(libs.logback.classic)

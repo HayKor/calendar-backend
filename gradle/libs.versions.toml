@@ -1,6 +1,7 @@
 [versions]
 exposed = "1.1.1"
 r2dbc-psql = "1.1.1.RELEASE"
+r2dbc-pool = "1.0.2.RELEASE"
 koin = "4.1.2-Beta1"
 kotlin = "2.3.0"
 ktor = "3.4.1"
@@ -32,6 +33,7 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "lo
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-r2dbc = { module = "org.jetbrains.exposed:exposed-r2dbc", version.ref = "exposed" }
 r2dbc-postgresql = { module = "org.postgresql:r2dbc-postgresql", version.ref = "r2dbc-psql" }
+r2dbc-pool = { module = "io.r2dbc:r2dbc-pool", version.ref = "r2dbc-pool" }
 jbcrypt = { module = "org.mindrot:jbcrypt", version.ref = "jbcrypt" }
 
 exposed-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }

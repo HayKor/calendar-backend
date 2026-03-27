@@ -1,4 +1,4 @@
-package com.haykor.di
+package com.haykor.core.di
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*

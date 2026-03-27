@@ -1,4 +1,4 @@
-package com.haykor.di
+package com.haykor.core.di
 
 import com.haykor.features.auth.data.AuthSessionRepositoryImpl
 import com.haykor.features.auth.data.JwtEncryptor
@@ -20,7 +20,7 @@ fun authModule(config: ApplicationConfig) = module {
     }
 
     single<AuthSessionRepository> { AuthSessionRepositoryImpl(get()) }
-    factory { new(::LoginUseCase) }
-    factory { new(::ExternalLoginUseCase) }
-    factory { new(::RefreshTokensUseCase) }
+    single { new(::LoginUseCase) }
+    single { new(::ExternalLoginUseCase) }
+    single { new(::RefreshTokensUseCase) }
 }
