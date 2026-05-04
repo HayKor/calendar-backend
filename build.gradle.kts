@@ -26,6 +26,10 @@ ktor {
     }
 }
 
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    mergeServiceFiles()
+}
+
 dependencies {
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.swagger)
@@ -54,6 +58,7 @@ dependencies {
     implementation(libs.exposed.datetime)
     implementation(libs.jbcrypt)
     implementation(libs.logback.classic)
+    implementation("io.ktor:ktor-client-apache:3.4.1")
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
