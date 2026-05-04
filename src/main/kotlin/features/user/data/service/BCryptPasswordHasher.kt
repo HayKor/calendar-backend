@@ -1,6 +1,6 @@
-package com.haykor.features.user.data
+package com.haykor.features.user.data.service
 
-import com.haykor.features.user.domain.PasswordHasher
+import com.haykor.features.user.domain.service.PasswordHasher
 import org.mindrot.jbcrypt.BCrypt
 
 class BCryptPasswordHasher : PasswordHasher {

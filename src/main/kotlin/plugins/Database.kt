@@ -1,8 +1,8 @@
 package com.haykor.plugins
 
 import com.haykor.features.auth.data.AuthSessionTable
-import com.haykor.features.user.data.UserSocialAccountsTable
-import com.haykor.features.user.data.UserTable
+import com.haykor.features.user.data.local.UserSocialAccountsTable
+import com.haykor.features.user.data.local.UserTable
 import io.ktor.server.application.*
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.v1.r2dbc.R2dbcDatabase

@@ -1,4 +1,4 @@
-package com.haykor.features.user.domain
+package com.haykor.features.user.domain.model
 
 data class CreateUserParams(
     val name: String,

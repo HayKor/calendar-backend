@@ -1,8 +1,10 @@
-package com.haykor.features.user.data
+package com.haykor.features.user.data.repository
 
-import com.haykor.features.user.domain.CreateUserParams
-import com.haykor.features.user.domain.User
-import com.haykor.features.user.domain.UserRepository
+import com.haykor.features.user.data.local.UserSocialAccountsTable
+import com.haykor.features.user.data.local.UserTable
+import com.haykor.features.user.domain.model.CreateUserParams
+import com.haykor.features.user.domain.model.User
+import com.haykor.features.user.domain.repository.UserRepository
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.singleOrNull

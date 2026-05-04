@@ -13,3 +13,7 @@ abstract class UnauthorizedException(
 abstract class ConflictException(
     message: String,
 ) : AppException(message, HttpStatusCode.Conflict)
+
+abstract class ForbiddenException(
+    message: String,
+) : AppException(message, HttpStatusCode.Forbidden)

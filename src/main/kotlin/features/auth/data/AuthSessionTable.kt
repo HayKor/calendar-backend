@@ -2,7 +2,7 @@
 
 package com.haykor.features.auth.data
 
-import com.haykor.features.user.data.UserTable
+import com.haykor.features.user.data.local.UserTable
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable

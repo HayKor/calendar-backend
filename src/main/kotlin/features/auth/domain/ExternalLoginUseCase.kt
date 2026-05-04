@@ -2,9 +2,9 @@ package com.haykor.features.auth.domain
 
 import com.haykor.features.auth.data.JwtEncryptor
 import com.haykor.features.auth.presentation.GoogleUserDTO
-import com.haykor.features.user.domain.CreateUserParams
-import com.haykor.features.user.domain.UserRepository
-import com.haykor.features.user.domain.UserSocialsRepository
+import com.haykor.features.user.domain.model.CreateUserParams
+import com.haykor.features.user.domain.repository.UserRepository
+import com.haykor.features.user.domain.repository.UserSocialsRepository
 import kotlin.uuid.ExperimentalUuidApi
 
 class ExternalLoginUseCase(

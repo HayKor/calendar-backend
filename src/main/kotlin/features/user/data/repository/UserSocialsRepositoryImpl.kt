@@ -1,7 +1,8 @@
-package com.haykor.features.user.data
+package com.haykor.features.user.data.repository
 
-import com.haykor.features.user.domain.User
-import com.haykor.features.user.domain.UserSocialsRepository
+import com.haykor.features.user.data.local.UserSocialAccountsTable
+import com.haykor.features.user.domain.model.User
+import com.haykor.features.user.domain.repository.UserSocialsRepository
 import org.jetbrains.exposed.v1.r2dbc.R2dbcDatabase
 import org.jetbrains.exposed.v1.r2dbc.insert
 import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
