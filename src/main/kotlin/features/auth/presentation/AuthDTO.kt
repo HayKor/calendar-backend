@@ -1,5 +1,6 @@
 package com.haykor.features.auth.presentation
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,8 +11,8 @@ data class LoginRequest(
 
 @Serializable
 data class TokenResponse(
-    val accessToken: String,
-    val refreshToken: String,
-    val accessTokenExpiresIn: Long,
-    val refreshTokenExpiresIn: Long,
+    @SerialName("access_token") val accessToken: String,
+    @SerialName("refresh_token") val refreshToken: String,
+    @SerialName("access_token_expires_in") val accessTokenExpiresIn: Long,
+    @SerialName("refresh_token_expires_in") val refreshTokenExpiresIn: Long,
 )

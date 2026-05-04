@@ -4,6 +4,7 @@ package com.haykor.features.auth.presentation
 
 import com.haykor.features.auth.domain.AuthException
 import com.haykor.features.auth.domain.ExternalLoginUseCase
+import com.haykor.features.auth.domain.GoogleIdTokenVerifier
 import com.haykor.features.auth.domain.LoginUseCase
 import com.haykor.features.auth.domain.RefreshTokensUseCase
 import io.ktor.client.*
@@ -24,6 +25,7 @@ fun Route.authRoutes() {
     val externalLoginUseCase by inject<ExternalLoginUseCase>()
     val refreshTokensUseCase by inject<RefreshTokensUseCase>()
     val httpClient by inject<HttpClient>()
+    val googleIdTokenVerifier by inject<GoogleIdTokenVerifier>()
 
     /**
      * Tag: Auth
@@ -35,6 +37,34 @@ fun Route.authRoutes() {
             val userIp = call.request.origin.remoteAddress
 
             val auth = loginUseCase(request, userIp, userAgent)
+            call.response.cookies.append(
+                name = "refresh_token",
+                value = auth.refreshToken.toString(),
+                httpOnly = true,
+                secure = true,
+                path = "/api/auth",
+                maxAge = auth.refreshTokenExpiresIn,
+            )
+            call.respond(
+                HttpStatusCode.OK,
+                TokenResponse(
+                    auth.accessToken,
+                    auth.refreshToken.toString(),
+                    auth.accessTokenExpiresIn,
+                    auth.refreshTokenExpiresIn,
+                ),
+            )
+        }
+        post("/login/google/mobile") {
+            val request = call.receive<GoogleIdTokenRequest>()
+            val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
+            val userIp = call.request.origin.remoteAddress
+
+            // Verify the ID token with Google and extract user info
+            val googleUser = googleIdTokenVerifier.verify(request.idToken)
+                ?: throw AuthException.InvalidToken()
+
+            val auth = externalLoginUseCase(googleUser, userIp, userAgent)
             call.response.cookies.append(
                 name = "refresh_token",
                 value = auth.refreshToken.toString(),
