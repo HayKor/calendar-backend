@@ -58,9 +58,7 @@ dependencies {
     implementation(libs.exposed.datetime)
     implementation(libs.jbcrypt)
     implementation(libs.logback.classic)
-    implementation("io.ktor:ktor-client-apache:3.4.1")
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
-    testImplementation("io.ktor:ktor-server-test-host-jvm:3.4.1")
 }
