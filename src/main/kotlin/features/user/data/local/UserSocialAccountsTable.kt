@@ -1,4 +1,4 @@
-package com.haykor.features.user.data
+package com.haykor.features.user.data.local
 
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 

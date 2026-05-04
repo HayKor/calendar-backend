@@ -1,4 +1,4 @@
-package com.haykor.features.user.presentation
+package com.haykor.features.user.presentation.model
 
 import kotlinx.serialization.Serializable
 

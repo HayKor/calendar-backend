@@ -1,4 +1,4 @@
-package com.haykor.features.user.domain
+package com.haykor.features.user.domain.service
 
 interface PasswordHasher {
     fun hash(password: String): String

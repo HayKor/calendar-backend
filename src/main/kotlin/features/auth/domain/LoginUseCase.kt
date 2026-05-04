@@ -4,9 +4,9 @@ package com.haykor.features.auth.domain
 
 import com.haykor.features.auth.data.JwtEncryptor
 import com.haykor.features.auth.presentation.LoginRequest
-import com.haykor.features.user.domain.PasswordHasher
-import com.haykor.features.user.domain.UserException
-import com.haykor.features.user.domain.UserRepository
+import com.haykor.features.user.domain.service.PasswordHasher
+import com.haykor.features.user.domain.model.UserException
+import com.haykor.features.user.domain.repository.UserRepository
 import kotlin.uuid.ExperimentalUuidApi
 
 class LoginUseCase(

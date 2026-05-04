@@ -1,6 +1,11 @@
-package com.haykor.features.user.domain
+package com.haykor.features.user.domain.usecase
 
-import com.haykor.features.user.presentation.UserCreateRequest
+import com.haykor.features.user.domain.model.CreateUserParams
+import com.haykor.features.user.domain.model.User
+import com.haykor.features.user.domain.model.UserException
+import com.haykor.features.user.domain.repository.UserRepository
+import com.haykor.features.user.domain.service.PasswordHasher
+import com.haykor.features.user.presentation.model.UserCreateRequest
 
 class CreateUserUseCase(
     private val repository: UserRepository,

@@ -1,8 +1,10 @@
 package com.haykor.features.user.presentation
 
 import com.haykor.core.exception.BadRequest
-import com.haykor.features.user.domain.CreateUserUseCase
-import com.haykor.features.user.domain.GetUserUseCase
+import com.haykor.features.user.domain.usecase.CreateUserUseCase
+import com.haykor.features.user.domain.usecase.GetUserUseCase
+import com.haykor.features.user.presentation.model.UserCreateRequest
+import com.haykor.features.user.presentation.model.UserResponse
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
