@@ -1,6 +1,6 @@
 package com.haykor.plugins
 
-import com.haykor.features.auth.data.AuthSessionTable
+import com.haykor.features.auth.data.local.AuthSessionTable
 import com.haykor.features.user.data.local.UserSocialAccountsTable
 import com.haykor.features.user.data.local.UserTable
 import io.ktor.server.application.*

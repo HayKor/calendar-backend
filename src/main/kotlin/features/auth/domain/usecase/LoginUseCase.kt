@@ -1,12 +1,16 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-package com.haykor.features.auth.domain
+package com.haykor.features.auth.domain.usecase
 
-import com.haykor.features.auth.data.JwtEncryptor
-import com.haykor.features.auth.presentation.LoginRequest
-import com.haykor.features.user.domain.service.PasswordHasher
+import com.haykor.features.auth.data.service.JwtEncryptor
+import com.haykor.features.auth.domain.model.Auth
+import com.haykor.features.auth.domain.model.AuthException
+import com.haykor.features.auth.domain.model.CreateAuthSessionParams
+import com.haykor.features.auth.domain.repository.AuthSessionRepository
+import com.haykor.features.auth.presentation.model.LoginRequest
 import com.haykor.features.user.domain.model.UserException
 import com.haykor.features.user.domain.repository.UserRepository
+import com.haykor.features.user.domain.service.PasswordHasher
 import kotlin.uuid.ExperimentalUuidApi
 
 class LoginUseCase(

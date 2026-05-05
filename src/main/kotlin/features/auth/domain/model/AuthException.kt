@@ -1,4 +1,4 @@
-package com.haykor.features.auth.domain
+package com.haykor.features.auth.domain.model
 
 import com.haykor.core.exception.UnauthorizedException
 

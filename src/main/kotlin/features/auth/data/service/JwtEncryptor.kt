@@ -1,12 +1,9 @@
-@file:OptIn(ExperimentalUuidApi::class)
-
-package com.haykor.features.auth.data
+package com.haykor.features.auth.data.service
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import java.util.*
-import kotlin.uuid.ExperimentalUuidApi
+import java.util.Date
 
 class JwtEncryptor(
     secret: String,

@@ -2,11 +2,15 @@
 
 package com.haykor.features.auth.presentation
 
-import com.haykor.features.auth.domain.AuthException
-import com.haykor.features.auth.domain.ExternalLoginUseCase
-import com.haykor.features.auth.domain.GoogleIdTokenVerifier
-import com.haykor.features.auth.domain.LoginUseCase
-import com.haykor.features.auth.domain.RefreshTokensUseCase
+import com.haykor.features.auth.domain.model.AuthException
+import com.haykor.features.auth.domain.usecase.ExternalLoginUseCase
+import com.haykor.features.auth.domain.service.GoogleIdTokenVerifier
+import com.haykor.features.auth.domain.usecase.LoginUseCase
+import com.haykor.features.auth.domain.usecase.RefreshTokensUseCase
+import com.haykor.features.auth.presentation.model.GoogleIdTokenRequest
+import com.haykor.features.auth.presentation.model.GoogleUserDTO
+import com.haykor.features.auth.presentation.model.LoginRequest
+import com.haykor.features.auth.presentation.model.TokenResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*

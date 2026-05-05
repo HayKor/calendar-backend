@@ -1,8 +1,12 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-package com.haykor.features.auth.domain
+package com.haykor.features.auth.domain.usecase
 
-import com.haykor.features.auth.data.JwtEncryptor
+import com.haykor.features.auth.data.service.JwtEncryptor
+import com.haykor.features.auth.domain.model.Auth
+import com.haykor.features.auth.domain.model.AuthException
+import com.haykor.features.auth.domain.model.UpdateSessionParams
+import com.haykor.features.auth.domain.repository.AuthSessionRepository
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 

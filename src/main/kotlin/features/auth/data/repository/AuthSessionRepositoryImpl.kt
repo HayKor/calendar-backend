@@ -1,11 +1,12 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-package com.haykor.features.auth.data
+package com.haykor.features.auth.data.repository
 
-import com.haykor.features.auth.domain.AuthSession
-import com.haykor.features.auth.domain.AuthSessionRepository
-import com.haykor.features.auth.domain.CreateAuthSessionParams
-import com.haykor.features.auth.domain.UpdateSessionParams
+import com.haykor.features.auth.data.local.AuthSessionTable
+import com.haykor.features.auth.domain.model.AuthSession
+import com.haykor.features.auth.domain.model.CreateAuthSessionParams
+import com.haykor.features.auth.domain.model.UpdateSessionParams
+import com.haykor.features.auth.domain.repository.AuthSessionRepository
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.singleOrNull
@@ -53,7 +54,7 @@ class AuthSessionRepositoryImpl(
                 it[this.userIp] = params.userIp
                 it[this.userAgent] = params.userAgent
 
-                it[this.updatedAt] = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+                it[this.updatedAt] = Clock.System.now().toLocalDateTime(TimeZone.Companion.currentSystemDefault())
             }.map { it.toAuthSession() }
             .singleOrNull()
     }

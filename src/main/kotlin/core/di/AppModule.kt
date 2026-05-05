@@ -1,6 +1,6 @@
 package com.haykor.core.di
 
-import com.haykor.features.auth.data.JwtEncryptor
+import com.haykor.features.auth.data.service.JwtEncryptor
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*

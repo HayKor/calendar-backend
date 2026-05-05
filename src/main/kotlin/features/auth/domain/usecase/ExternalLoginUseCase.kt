@@ -1,7 +1,12 @@
-package com.haykor.features.auth.domain
+@file:OptIn(ExperimentalUuidApi::class)
 
-import com.haykor.features.auth.data.JwtEncryptor
-import com.haykor.features.auth.presentation.GoogleUserDTO
+package com.haykor.features.auth.domain.usecase
+
+import com.haykor.features.auth.data.service.JwtEncryptor
+import com.haykor.features.auth.domain.model.Auth
+import com.haykor.features.auth.domain.model.CreateAuthSessionParams
+import com.haykor.features.auth.domain.repository.AuthSessionRepository
+import com.haykor.features.auth.presentation.model.GoogleUserDTO
 import com.haykor.features.user.domain.model.CreateUserDbParams
 import com.haykor.features.user.domain.repository.UserRepository
 import com.haykor.features.user.domain.repository.UserSocialsRepository
@@ -13,7 +18,6 @@ class ExternalLoginUseCase(
     private val userSocialsRepository: UserSocialsRepository,
     private val jwtEncryptor: JwtEncryptor,
 ) {
-    @OptIn(ExperimentalUuidApi::class)
     suspend operator fun invoke(
         googleUserDTO: GoogleUserDTO,
         userIp: String,
