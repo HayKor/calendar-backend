@@ -2,7 +2,7 @@ package com.haykor.features.user.data.repository
 
 import com.haykor.features.user.data.local.UserSocialAccountsTable
 import com.haykor.features.user.data.local.UserTable
-import com.haykor.features.user.domain.model.CreateUserParams
+import com.haykor.features.user.domain.model.CreateUserDbParams
 import com.haykor.features.user.domain.model.User
 import com.haykor.features.user.domain.repository.UserRepository
 import kotlinx.coroutines.flow.map
@@ -20,7 +20,7 @@ import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
 class UserRepositoryImpl(
     private val database: R2dbcDatabase,
 ) : UserRepository {
-    override suspend fun create(user: CreateUserParams): User = suspendTransaction(database) {
+    override suspend fun create(user: CreateUserDbParams): User = suspendTransaction(database) {
         UserTable
             .insertReturning {
                 it[username] = user.name
