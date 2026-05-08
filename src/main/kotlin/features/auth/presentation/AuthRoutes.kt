@@ -2,9 +2,11 @@
 
 package com.haykor.features.auth.presentation
 
+import com.haykor.core.common.presentation.requestContext
+import com.haykor.features.auth.domain.model.Auth
 import com.haykor.features.auth.domain.model.AuthException
-import com.haykor.features.auth.domain.usecase.ExternalLoginUseCase
 import com.haykor.features.auth.domain.service.GoogleIdTokenVerifier
+import com.haykor.features.auth.domain.usecase.ExternalLoginUseCase
 import com.haykor.features.auth.domain.usecase.LoginUseCase
 import com.haykor.features.auth.domain.usecase.RefreshTokensUseCase
 import com.haykor.features.auth.presentation.model.GoogleIdTokenRequest
@@ -16,7 +18,6 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.auth.*
-import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -37,80 +38,26 @@ fun Route.authRoutes() {
     route("/auth") {
         post("/login") {
             val request = call.receive<LoginRequest>()
-            val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
-            val userIp = call.request.origin.remoteAddress
+            val (userIp, userAgent) = call.requestContext()
 
-            val auth = loginUseCase(request, userIp, userAgent)
-            call.response.cookies.append(
-                name = "refresh_token",
-                value = auth.refreshToken.toString(),
-                httpOnly = true,
-                secure = true,
-                path = "/api/auth",
-                maxAge = auth.refreshTokenExpiresIn,
-            )
-            call.respond(
-                HttpStatusCode.OK,
-                TokenResponse(
-                    auth.accessToken,
-                    auth.refreshToken.toString(),
-                    auth.accessTokenExpiresIn,
-                    auth.refreshTokenExpiresIn,
-                ),
-            )
+            call.respondWithTokens(loginUseCase(request, userIp, userAgent))
         }
         post("/login/google/mobile") {
             val request = call.receive<GoogleIdTokenRequest>()
-            val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
-            val userIp = call.request.origin.remoteAddress
+            val (userIp, userAgent) = call.requestContext()
 
             // Verify the ID token with Google and extract user info
             val googleUser = googleIdTokenVerifier.verify(request.idToken)
                 ?: throw AuthException.InvalidToken()
 
-            val auth = externalLoginUseCase(googleUser, userIp, userAgent)
-            call.response.cookies.append(
-                name = "refresh_token",
-                value = auth.refreshToken.toString(),
-                httpOnly = true,
-                secure = true,
-                path = "/api/auth",
-                maxAge = auth.refreshTokenExpiresIn,
-            )
-            call.respond(
-                HttpStatusCode.OK,
-                TokenResponse(
-                    auth.accessToken,
-                    auth.refreshToken.toString(),
-                    auth.accessTokenExpiresIn,
-                    auth.refreshTokenExpiresIn,
-                ),
-            )
+            call.respondWithTokens(externalLoginUseCase(googleUser, userIp, userAgent))
         }
         post("/refresh_tokens") {
             val refreshToken =
                 call.request.cookies["refresh_token"]
                     ?: throw AuthException.InvalidToken()
-            val userIp = call.request.origin.remoteAddress
-            val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
-            val auth = refreshTokensUseCase(Uuid.parse(refreshToken), userIp, userAgent)
-            call.response.cookies.append(
-                name = "refresh_token",
-                value = auth.refreshToken.toString(),
-                httpOnly = true,
-                secure = true,
-                path = "/api/auth",
-                maxAge = auth.refreshTokenExpiresIn,
-            )
-            call.respond(
-                HttpStatusCode.OK,
-                TokenResponse(
-                    auth.accessToken,
-                    auth.refreshToken.toString(),
-                    auth.accessTokenExpiresIn,
-                    auth.refreshTokenExpiresIn,
-                ),
-            )
+            val (userIp, userAgent) = call.requestContext()
+            call.respondWithTokens(refreshTokensUseCase(Uuid.parse(refreshToken), userIp, userAgent))
         }
         authenticate("auth-oauth-google") {
             get("/login/google") {
@@ -118,8 +65,7 @@ fun Route.authRoutes() {
             }
             get("/callback/google") {
                 val principal = call.principal<OAuthAccessTokenResponse.OAuth2>() ?: throw AuthException.InvalidToken()
-                val userAgent = call.request.headers["User-Agent"] ?: "Unknown"
-                val userIp = call.request.origin.remoteAddress
+                val (userIp, userAgent) = call.requestContext()
 
                 val googleUser =
                     httpClient
@@ -127,25 +73,28 @@ fun Route.authRoutes() {
                             header(HttpHeaders.Authorization, "Bearer ${principal.accessToken}")
                         }.body<GoogleUserDTO>()
 
-                val auth = externalLoginUseCase(googleUser, userIp, userAgent)
-                call.response.cookies.append(
-                    name = "refresh_token",
-                    value = auth.refreshToken.toString(),
-                    httpOnly = true,
-                    secure = true,
-                    path = "/api/auth",
-                    maxAge = auth.refreshTokenExpiresIn,
-                )
-                call.respond(
-                    HttpStatusCode.OK,
-                    TokenResponse(
-                        auth.accessToken,
-                        auth.refreshToken.toString(),
-                        auth.accessTokenExpiresIn,
-                        auth.refreshTokenExpiresIn,
-                    ),
-                )
+                call.respondWithTokens(externalLoginUseCase(googleUser, userIp, userAgent))
             }
         }
     }
+}
+
+private suspend fun RoutingCall.respondWithTokens(auth: Auth) {
+    response.cookies.append(
+        name = "refresh_token",
+        value = auth.refreshToken.toString(),
+        httpOnly = true,
+        secure = true,
+        path = "/api/auth",
+        maxAge = auth.refreshTokenExpiresIn,
+    )
+    respond(
+        HttpStatusCode.OK,
+        TokenResponse(
+            auth.accessToken,
+            auth.refreshToken.toString(),
+            auth.accessTokenExpiresIn,
+            auth.refreshTokenExpiresIn,
+        ),
+    )
 }

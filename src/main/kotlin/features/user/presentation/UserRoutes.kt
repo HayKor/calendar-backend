@@ -1,6 +1,7 @@
 package com.haykor.features.user.presentation
 
 import com.haykor.core.exception.BadRequest
+import com.haykor.features.user.domain.model.CreateUserParams
 import com.haykor.features.user.domain.usecase.CreateUserUseCase
 import com.haykor.features.user.domain.usecase.GetUserUseCase
 import com.haykor.features.user.presentation.model.UserCreateRequest
@@ -23,7 +24,14 @@ fun Route.userRoutes() {
     route("/user") {
         post {
             val request = call.receive<UserCreateRequest>()
-            val user = createUserUseCase(request)
+            val user = createUserUseCase(
+                CreateUserParams(
+                    request.name,
+                    request.email,
+                    request.password,
+                    isVerified = false,
+                ),
+            )
             call.respond(
                 HttpStatusCode.Created,
                 UserResponse(
