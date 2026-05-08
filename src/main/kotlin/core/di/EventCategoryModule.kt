@@ -14,7 +14,7 @@ val eventCategoryModule =
         single<EventCategoriesRepository> { new(::EventCategoriesRepositoryImpl) }
 
         single { new(::CreateEventCategoryUseCase) }
-        single { new(::DeleteEventCategoryUseCase) }
-        single { new(::GetAllEventCategoriesUseCase) }
         single { new(::GetEventCategoryByIdUseCase) }
+        single { new(::GetAllEventCategoriesUseCase) }
+        single { new(::DeleteEventCategoryUseCase) }
     }

@@ -1,7 +1,8 @@
-package features.eventCategories
+package features.eventCategories.domain.usecase
 
 import com.haykor.features.eventCategories.domain.repository.EventCategoriesRepository
 import com.haykor.features.eventCategories.domain.usecase.GetAllEventCategoriesUseCase
+import features.eventCategories.domain.model.EventCategoryFixtures
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertTrue

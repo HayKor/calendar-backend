@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
 
     implementation(libs.koin.ktor)
+    implementation(libs.koin.test)
     implementation(libs.koin.logger.slf4j)
 
     implementation(libs.exposed.core)
@@ -63,4 +64,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlin.test)
+//    testImplementation("io.ktor:ktor-server-test-host-jvm:3.4.1")
 }
