@@ -1,6 +1,7 @@
 package com.haykor.plugins
 
 import com.haykor.features.auth.data.local.AuthSessionTable
+import com.haykor.features.eventCategories.data.local.EventCategoriesTable
 import com.haykor.features.user.data.local.UserSocialAccountsTable
 import com.haykor.features.user.data.local.UserTable
 import io.ktor.server.application.*
@@ -18,7 +19,12 @@ fun Application.configureDatabases() {
         )
     runBlocking {
         suspendTransaction(database) {
-            SchemaUtils.create(UserTable, UserSocialAccountsTable, AuthSessionTable)
+            SchemaUtils.create(
+                UserTable,
+                UserSocialAccountsTable,
+                AuthSessionTable,
+                EventCategoriesTable,
+            )
         }
     }
 }

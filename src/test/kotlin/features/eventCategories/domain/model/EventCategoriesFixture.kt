@@ -1,4 +1,4 @@
-package features.eventCategories
+package features.eventCategories.domain.model
 
 import com.haykor.core.common.domain.Visibility
 import com.haykor.features.eventCategories.domain.model.CreateEventCategoryParams

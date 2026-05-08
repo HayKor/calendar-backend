@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreateEventCategoryRequest(
     val name: String,
-    val userId: Int,
     val visibility: Visibility,
     val colorHex: String,
     val iconName: String? = null,

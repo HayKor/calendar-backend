@@ -3,5 +3,6 @@
 build/
 /.gradle/
 .env
+.env.deployment
 .editorconfig
 gradle.properties

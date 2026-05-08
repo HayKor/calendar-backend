@@ -1,8 +1,9 @@
-package features.eventCategories
+package features.eventCategories.domain.usecase
 
 import com.haykor.features.eventCategories.domain.model.EventCategoryException
 import com.haykor.features.eventCategories.domain.repository.EventCategoriesRepository
 import com.haykor.features.eventCategories.domain.usecase.DeleteEventCategoryUseCase
+import features.eventCategories.domain.model.EventCategoryFixtures
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
