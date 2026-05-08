@@ -55,9 +55,16 @@ fun Route.userRoutes() {
         }
         authenticate("auth-jwt") {
             get("me") {
-                // TODO: return user's info
                 val (userId) = principalContext()
-                call.respond(mapOf("userId" to "$userId"))
+                val user = getUserUseCase(userId)
+                call.respond(
+                    HttpStatusCode.OK,
+                    UserResponse(
+                        id = user.id,
+                        email = user.email,
+                        name = user.name,
+                    ),
+                )
             }
         }
     }
