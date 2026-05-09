@@ -1,0 +1,36 @@
+package com.haykor.features.event.domain.model
+
+import com.haykor.core.common.domain.Visibility
+import java.time.OffsetDateTime
+
+// features/events/domain/repository/CreateEventParams.kt
+data class CreateEventParams(
+    val userId: Int,
+    val categoryId: Int? = null,
+    val title: String,
+    val description: String? = null,
+    val location: String? = null,
+    val startAt: OffsetDateTime,
+    val endAt: OffsetDateTime? = null,
+    val isAllDay: Boolean,
+    val eventTimezone: String,
+    val visibility: Visibility = Visibility.Friends,
+    val isRecurring: Boolean,
+    val rrule: String? = null,
+    val recurrenceUntil: OffsetDateTime? = null,
+)
+
+data class UpdateEventParams(
+    val categoryId: Int?,
+    val title: String?,
+    val description: String?,
+    val location: String?,
+    val startAt: OffsetDateTime?,
+    val endAt: OffsetDateTime?,
+    val isAllDay: Boolean?,
+    val eventTimezone: String?,
+    val visibility: Visibility?,
+    val isRecurring: Boolean?,
+    val rrule: String?,
+    val recurrenceUntil: OffsetDateTime?,
+)

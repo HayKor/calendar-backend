@@ -4,12 +4,13 @@ import com.haykor.core.common.domain.Visibility
 import com.haykor.features.user.data.local.UserTable
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.exposed.v1.core.ReferenceOption
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.datetime
 import kotlin.time.Clock
 
-object EventCategoriesTable : IntIdTable("event_categories") {
-    val user = reference("user_id", UserTable)
+object EventCategoryTable : IntIdTable("event_categories") {
+    val user = reference("user_id", UserTable, onDelete = ReferenceOption.CASCADE)
     val name = varchar("name", 50)
     val defaultVisibility = enumeration("default_visibility", Visibility::class)
         .default(Visibility.Public)

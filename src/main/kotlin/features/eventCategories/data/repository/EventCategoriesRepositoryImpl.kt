@@ -1,6 +1,6 @@
 package com.haykor.features.eventCategories.data.repository
 
-import com.haykor.features.eventCategories.data.local.EventCategoriesTable
+import com.haykor.features.eventCategories.data.local.EventCategoryTable
 import com.haykor.features.eventCategories.domain.model.CreateEventCategoryParams
 import com.haykor.features.eventCategories.domain.model.EventCategory
 import com.haykor.features.eventCategories.domain.repository.EventCategoriesRepository
@@ -20,7 +20,7 @@ class EventCategoriesRepositoryImpl(
     private val db: R2dbcDatabase,
 ) : EventCategoriesRepository {
     override suspend fun create(params: CreateEventCategoryParams): EventCategory = suspendTransaction(db) {
-        EventCategoriesTable.insertReturning {
+        EventCategoryTable.insertReturning {
             it[name] = params.name
             it[user] = params.userId
             it[defaultVisibility] = params.visibility
@@ -30,32 +30,32 @@ class EventCategoriesRepositoryImpl(
     }
 
     override suspend fun getById(id: Int): EventCategory? = suspendTransaction(db) {
-        EventCategoriesTable
+        EventCategoryTable
             .selectAll()
-            .where { EventCategoriesTable.id eq id }
+            .where { EventCategoryTable.id eq id }
             .map { it.toEventCategory() }
             .singleOrNull()
     }
 
     override suspend fun getAllByUser(userId: Int): List<EventCategory> = suspendTransaction(db) {
-        EventCategoriesTable
+        EventCategoryTable
             .selectAll()
-            .where { EventCategoriesTable.user eq userId }
+            .where { EventCategoryTable.user eq userId }
             .map { it.toEventCategory() }
             .toList()
     }
 
     override suspend fun deleteById(id: Int): Boolean = suspendTransaction(db) {
-        EventCategoriesTable
-            .deleteWhere { EventCategoriesTable.id eq id } > 0
+        EventCategoryTable
+            .deleteWhere { EventCategoryTable.id eq id } > 0
     }
 
     private fun ResultRow.toEventCategory() = EventCategory(
-        id = this[EventCategoriesTable.id].value,
-        userId = this[EventCategoriesTable.user].value,
-        name = this[EventCategoriesTable.name],
-        visibility = this[EventCategoriesTable.defaultVisibility],
-        iconName = this[EventCategoriesTable.iconName],
-        colorHex = this[EventCategoriesTable.colorHex],
+        id = this[EventCategoryTable.id].value,
+        userId = this[EventCategoryTable.user].value,
+        name = this[EventCategoryTable.name],
+        visibility = this[EventCategoryTable.defaultVisibility],
+        iconName = this[EventCategoryTable.iconName],
+        colorHex = this[EventCategoryTable.colorHex],
     )
 }

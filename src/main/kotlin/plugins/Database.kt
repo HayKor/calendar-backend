@@ -1,7 +1,8 @@
 package com.haykor.plugins
 
 import com.haykor.features.auth.data.local.AuthSessionTable
-import com.haykor.features.eventCategories.data.local.EventCategoriesTable
+import com.haykor.features.event.data.local.EventTable
+import com.haykor.features.eventCategories.data.local.EventCategoryTable
 import com.haykor.features.user.data.local.UserSocialAccountsTable
 import com.haykor.features.user.data.local.UserTable
 import io.ktor.server.application.*
@@ -23,7 +24,8 @@ fun Application.configureDatabases() {
                 UserTable,
                 UserSocialAccountsTable,
                 AuthSessionTable,
-                EventCategoriesTable,
+                EventCategoryTable,
+                EventTable,
             )
         }
     }
