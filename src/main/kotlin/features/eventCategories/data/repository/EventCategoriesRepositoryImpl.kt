@@ -1,8 +1,8 @@
 package com.haykor.features.eventCategories.data.repository
 
 import com.haykor.features.eventCategories.data.local.EventCategoryTable
-import com.haykor.features.eventCategories.domain.model.CreateEventCategoryParams
 import com.haykor.features.eventCategories.domain.model.EventCategory
+import com.haykor.features.eventCategories.domain.repository.CreateEventCategoryParams
 import com.haykor.features.eventCategories.domain.repository.EventCategoriesRepository
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single

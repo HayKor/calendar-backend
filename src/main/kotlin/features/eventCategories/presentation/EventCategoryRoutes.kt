@@ -2,7 +2,7 @@ package com.haykor.features.eventCategories.presentation
 
 import com.haykor.core.common.presentation.principalContext
 import com.haykor.core.exception.BadRequest
-import com.haykor.features.eventCategories.domain.model.CreateEventCategoryParams
+import com.haykor.features.eventCategories.domain.repository.CreateEventCategoryParams
 import com.haykor.features.eventCategories.domain.usecase.CreateEventCategoryUseCase
 import com.haykor.features.eventCategories.domain.usecase.DeleteEventCategoryUseCase
 import com.haykor.features.eventCategories.domain.usecase.GetAllEventCategoriesUseCase

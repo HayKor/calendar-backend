@@ -1,9 +1,9 @@
 package com.haykor.features.user.domain.usecase
 
-import com.haykor.features.user.domain.model.CreateUserDbParams
-import com.haykor.features.user.domain.model.CreateUserParams
 import com.haykor.features.user.domain.model.User
 import com.haykor.features.user.domain.model.UserException
+import com.haykor.features.user.domain.repository.CreateUserDbParams
+import com.haykor.features.user.domain.repository.CreateUserParams
 import com.haykor.features.user.domain.repository.UserRepository
 import com.haykor.features.user.domain.service.PasswordHasher
 

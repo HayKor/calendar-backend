@@ -1,9 +1,8 @@
-package com.haykor.features.event.domain.model
+package com.haykor.features.event.domain.repository
 
 import com.haykor.core.common.domain.Visibility
 import java.time.OffsetDateTime
 
-// features/events/domain/repository/CreateEventParams.kt
 data class CreateEventParams(
     val userId: Int,
     val categoryId: Int? = null,

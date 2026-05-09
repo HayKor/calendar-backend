@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-package com.haykor.features.auth.domain.model
+package com.haykor.features.auth.domain.repository
 
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid

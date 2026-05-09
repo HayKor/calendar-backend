@@ -1,10 +1,10 @@
 package com.haykor.features.event.data.repository
 
 import com.haykor.features.event.data.local.EventTable
-import com.haykor.features.event.domain.model.CreateEventParams
 import com.haykor.features.event.domain.model.Event
-import com.haykor.features.event.domain.model.UpdateEventParams
+import com.haykor.features.event.domain.repository.CreateEventParams
 import com.haykor.features.event.domain.repository.EventRepository
+import com.haykor.features.event.domain.repository.UpdateEventParams
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.singleOrNull
@@ -15,9 +15,9 @@ import org.jetbrains.exposed.v1.r2dbc.transactions.suspendTransaction
 import java.time.OffsetDateTime
 
 class EventRepositoryImpl(
-    private val database: R2dbcDatabase,
+    private val db: R2dbcDatabase,
 ) : EventRepository {
-    override suspend fun create(params: CreateEventParams): Event = suspendTransaction(database) {
+    override suspend fun create(params: CreateEventParams): Event = suspendTransaction(db) {
         EventTable.insertReturning {
             it[user] = params.userId
             it[category] = params.categoryId
@@ -34,7 +34,7 @@ class EventRepositoryImpl(
         }.single().toEvent()
     }
 
-    override suspend fun getById(id: Int): Event? = suspendTransaction(database) {
+    override suspend fun getById(id: Int): Event? = suspendTransaction(db) {
         EventTable
             .selectAll()
             .where { EventTable.id eq id }
@@ -42,7 +42,7 @@ class EventRepositoryImpl(
             ?.toEvent()
     }
 
-    override suspend fun getAllByUserId(userId: Int): List<Event> = suspendTransaction(database) {
+    override suspend fun getAllByUserId(userId: Int): List<Event> = suspendTransaction(db) {
         EventTable
             .selectAll()
             .where { EventTable.user eq userId }
@@ -62,7 +62,7 @@ class EventRepositoryImpl(
         userId: Int,
         from: OffsetDateTime,
         to: OffsetDateTime,
-    ): List<Event> = suspendTransaction(database) {
+    ): List<Event> = suspendTransaction(db) {
         EventTable
             .selectAll()
             .where {
@@ -89,7 +89,7 @@ class EventRepositoryImpl(
             .toList()
     }
 
-    override suspend fun update(id: Int, params: UpdateEventParams): Event? = suspendTransaction(database) {
+    override suspend fun update(id: Int, params: UpdateEventParams): Event? = suspendTransaction(db) {
         EventTable.updateReturning(
             where = { EventTable.id eq id },
         ) {
@@ -108,7 +108,7 @@ class EventRepositoryImpl(
         }.singleOrNull()?.toEvent()
     }
 
-    override suspend fun delete(id: Int): Boolean = suspendTransaction(database) {
+    override suspend fun delete(id: Int): Boolean = suspendTransaction(db) {
         EventTable.deleteWhere { EventTable.id eq id } > 0
     }
 

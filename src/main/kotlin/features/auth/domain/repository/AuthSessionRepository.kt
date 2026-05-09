@@ -1,8 +1,8 @@
 package com.haykor.features.auth.domain.repository
 
 import com.haykor.features.auth.domain.model.AuthSession
-import com.haykor.features.auth.domain.model.CreateAuthSessionParams
-import com.haykor.features.auth.domain.model.UpdateSessionParams
+import com.haykor.features.auth.domain.repository.CreateAuthSessionParams
+import com.haykor.features.auth.domain.repository.UpdateSessionParams
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 

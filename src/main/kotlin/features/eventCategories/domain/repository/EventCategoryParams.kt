@@ -1,9 +1,8 @@
-package com.haykor.features.eventCategories.domain.model
+package com.haykor.features.eventCategories.domain.repository
 
 import com.haykor.core.common.domain.Visibility
 
-data class EventCategory(
-    val id: Int,
+data class CreateEventCategoryParams(
     val userId: Int,
     val name: String,
     val visibility: Visibility = Visibility.Public,

@@ -2,7 +2,7 @@ package com.haykor.features.user.presentation
 
 import com.haykor.core.common.presentation.principalContext
 import com.haykor.core.exception.BadRequest
-import com.haykor.features.user.domain.model.CreateUserParams
+import com.haykor.features.user.domain.repository.CreateUserParams
 import com.haykor.features.user.domain.usecase.CreateUserUseCase
 import com.haykor.features.user.domain.usecase.GetUserUseCase
 import com.haykor.features.user.presentation.model.UserCreateRequest

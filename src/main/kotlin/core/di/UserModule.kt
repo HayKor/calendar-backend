@@ -1,8 +1,8 @@
 package com.haykor.core.di
 
-import com.haykor.features.user.data.service.BCryptPasswordHasher
 import com.haykor.features.user.data.repository.UserRepositoryImpl
 import com.haykor.features.user.data.repository.UserSocialsRepositoryImpl
+import com.haykor.features.user.data.service.BCryptPasswordHasher
 import com.haykor.features.user.domain.*
 import com.haykor.features.user.domain.repository.UserRepository
 import com.haykor.features.user.domain.repository.UserSocialsRepository

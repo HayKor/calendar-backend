@@ -1,6 +1,5 @@
 package com.haykor.features.eventCategories.domain.repository
 
-import com.haykor.features.eventCategories.domain.model.CreateEventCategoryParams
 import com.haykor.features.eventCategories.domain.model.EventCategory
 
 interface EventCategoriesRepository {

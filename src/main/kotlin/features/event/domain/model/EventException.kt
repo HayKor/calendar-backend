@@ -1,9 +1,16 @@
 package com.haykor.features.event.domain.model
 
-import com.haykor.core.exception.ForbiddenException
-import com.haykor.core.exception.NotFoundException
+import kotlinx.datetime.LocalDate
+import java.time.OffsetDateTime
 
-object EventException {
-    class NotFound : NotFoundException("Event not found")
-    class Forbidden : ForbiddenException("You don't have access to this event")
-}
+data class EventException(
+    val id: Int,
+    val eventId: Int,
+    val originalDate: LocalDate,
+    val isDeleted: Boolean,
+    val titleOverride: String?,
+    val startAtOverride: OffsetDateTime?,
+    val endAtOverride: OffsetDateTime?,
+    val locationOverride: String?,
+    val createdAt: OffsetDateTime,
+)

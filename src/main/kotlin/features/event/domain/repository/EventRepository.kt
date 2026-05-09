@@ -1,8 +1,6 @@
 package com.haykor.features.event.domain.repository
 
-import com.haykor.features.event.domain.model.CreateEventParams
 import com.haykor.features.event.domain.model.Event
-import com.haykor.features.event.domain.model.UpdateEventParams
 import java.time.OffsetDateTime
 
 interface EventRepository {

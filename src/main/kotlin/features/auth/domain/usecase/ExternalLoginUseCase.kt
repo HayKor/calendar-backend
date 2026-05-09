@@ -4,10 +4,10 @@ package com.haykor.features.auth.domain.usecase
 
 import com.haykor.features.auth.data.service.JwtEncryptor
 import com.haykor.features.auth.domain.model.Auth
-import com.haykor.features.auth.domain.model.CreateAuthSessionParams
 import com.haykor.features.auth.domain.repository.AuthSessionRepository
+import com.haykor.features.auth.domain.repository.CreateAuthSessionParams
 import com.haykor.features.auth.presentation.model.GoogleUserDTO
-import com.haykor.features.user.domain.model.CreateUserDbParams
+import com.haykor.features.user.domain.repository.CreateUserDbParams
 import com.haykor.features.user.domain.repository.UserRepository
 import com.haykor.features.user.domain.repository.UserSocialsRepository
 import kotlin.uuid.ExperimentalUuidApi

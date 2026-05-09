@@ -4,9 +4,9 @@ package com.haykor.features.auth.data.repository
 
 import com.haykor.features.auth.data.local.AuthSessionTable
 import com.haykor.features.auth.domain.model.AuthSession
-import com.haykor.features.auth.domain.model.CreateAuthSessionParams
-import com.haykor.features.auth.domain.model.UpdateSessionParams
 import com.haykor.features.auth.domain.repository.AuthSessionRepository
+import com.haykor.features.auth.domain.repository.CreateAuthSessionParams
+import com.haykor.features.auth.domain.repository.UpdateSessionParams
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.singleOrNull
