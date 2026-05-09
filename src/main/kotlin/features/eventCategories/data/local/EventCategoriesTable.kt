@@ -18,6 +18,10 @@ object EventCategoriesTable : IntIdTable("event_categories") {
     val iconName = varchar("icon_name", 50).nullable()
     val createdAt =
         datetime("created_at").clientDefault {
-            Clock.System.now().toLocalDateTime(TimeZone.Companion.currentSystemDefault())
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         }
+
+    init {
+        uniqueIndex(user, name)
+    }
 }

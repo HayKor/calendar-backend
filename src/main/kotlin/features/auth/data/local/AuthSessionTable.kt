@@ -15,13 +15,13 @@ object AuthSessionTable : IntIdTable("auth_sessions") {
     val user = reference("user_id", UserTable)
     val userIp = varchar("user_ip", 255)
     val userAgent = varchar("user_agent", 255)
-    val refreshToken = uuid("refresh_token").clientDefault { Uuid.Companion.random() }
+    val refreshToken = uuid("refresh_token").clientDefault { Uuid.random() }
     val createdAt =
         datetime("created_at").clientDefault {
-            Clock.System.now().toLocalDateTime(TimeZone.Companion.currentSystemDefault())
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         }
     val updatedAt =
         datetime("updated_at").clientDefault {
-            Clock.System.now().toLocalDateTime(TimeZone.Companion.currentSystemDefault())
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         }
 }

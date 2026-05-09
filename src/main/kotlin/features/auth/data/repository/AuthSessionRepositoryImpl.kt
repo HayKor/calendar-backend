@@ -54,7 +54,7 @@ class AuthSessionRepositoryImpl(
                 it[this.userIp] = params.userIp
                 it[this.userAgent] = params.userAgent
 
-                it[this.updatedAt] = Clock.System.now().toLocalDateTime(TimeZone.Companion.currentSystemDefault())
+                it[this.updatedAt] = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
             }.map { it.toAuthSession() }
             .singleOrNull()
     }
