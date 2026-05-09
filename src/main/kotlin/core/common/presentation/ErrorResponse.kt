@@ -1,4 +1,4 @@
-package com.haykor.core.presentation
+package com.haykor.core.common.presentation
 
 import kotlinx.serialization.Serializable
 

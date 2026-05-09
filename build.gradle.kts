@@ -60,6 +60,9 @@ dependencies {
     implementation(libs.jbcrypt)
     implementation(libs.logback.classic)
 
+    implementation("org.dmfs:lib-recur:0.17.1")
+    implementation("org.dmfs:rfc5545-datetime:0.3")
+
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)

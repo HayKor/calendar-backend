@@ -1,6 +1,6 @@
 package com.haykor.plugins
 
-import com.haykor.core.presentation.ErrorResponse
+import com.haykor.core.common.presentation.ErrorResponse
 import com.haykor.features.auth.data.service.JwtEncryptor
 import io.ktor.client.*
 import io.ktor.http.*

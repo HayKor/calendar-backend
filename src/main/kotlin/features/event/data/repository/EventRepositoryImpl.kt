@@ -24,6 +24,7 @@ class EventRepositoryImpl(
             it[title] = params.title
             it[description] = params.description
             it[location] = params.location
+            it[eventTimezone] = params.eventTimezone
             it[startAt] = params.startAt
             it[endAt] = params.endAt
             it[isAllDay] = params.isAllDay
@@ -97,6 +98,7 @@ class EventRepositoryImpl(
             params.title?.let { v -> it[title] = v }
             params.description?.let { v -> it[description] = v }
             params.location?.let { v -> it[location] = v }
+            params.eventTimezone?.let { v -> it[eventTimezone] = v }
             params.startAt?.let { v -> it[startAt] = v }
             params.endAt?.let { v -> it[endAt] = v }
             params.isAllDay?.let { v -> it[isAllDay] = v }
@@ -119,6 +121,7 @@ class EventRepositoryImpl(
         title = this[EventTable.title],
         description = this[EventTable.description],
         location = this[EventTable.location],
+        eventTimezone = this[EventTable.eventTimezone],
         startAt = this[EventTable.startAt],
         endAt = this[EventTable.endAt],
         isAllDay = this[EventTable.isAllDay],

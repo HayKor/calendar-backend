@@ -1,7 +1,7 @@
 package com.haykor.plugins
 
 import com.haykor.core.exception.AppException
-import com.haykor.core.presentation.ErrorResponse
+import com.haykor.core.common.presentation.ErrorResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*

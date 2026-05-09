@@ -10,6 +10,7 @@ data class Event(
     val title: String,
     val description: String? = null,
     val location: String? = null,
+    val eventTimezone: String,
     val startAt: OffsetDateTime,
     val endAt: OffsetDateTime? = null,
     val isAllDay: Boolean,

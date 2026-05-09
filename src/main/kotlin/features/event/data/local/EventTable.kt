@@ -15,6 +15,7 @@ object EventTable : IntIdTable("events") {
     val title = varchar("title", 255)
     val description = text("description").nullable()
     val location = varchar("location", 255).nullable()
+    val eventTimezone = varchar("event_timezone", 50).default("UTC")
 
     val startAt = timestampWithTimeZone("start_at")
     val endAt = timestampWithTimeZone("end_at").nullable()
