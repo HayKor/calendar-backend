@@ -1,6 +1,6 @@
 package com.haykor.features.event.domain.model
 
-import com.haykor.core.common.domain.Visibility
+import com.haykor.core.visibility.domain.model.Visibility
 import kotlinx.datetime.LocalDate
 import java.time.OffsetDateTime
 

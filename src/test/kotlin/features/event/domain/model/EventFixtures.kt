@@ -1,6 +1,6 @@
 package features.event.domain.model
 
-import com.haykor.core.common.domain.Visibility
+import com.haykor.core.visibility.domain.model.Visibility
 import com.haykor.core.util.mapper.toKotlinLocalDate
 import com.haykor.features.event.domain.model.Event
 import com.haykor.features.event.domain.model.EventOccurrence

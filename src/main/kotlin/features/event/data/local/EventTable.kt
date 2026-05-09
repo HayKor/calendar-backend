@@ -1,6 +1,6 @@
 package com.haykor.features.event.data.local
 
-import com.haykor.core.common.domain.Visibility
+import com.haykor.core.visibility.domain.model.Visibility
 import com.haykor.features.eventCategories.data.local.EventCategoryTable
 import com.haykor.features.user.data.local.UserTable
 import org.jetbrains.exposed.v1.core.ReferenceOption

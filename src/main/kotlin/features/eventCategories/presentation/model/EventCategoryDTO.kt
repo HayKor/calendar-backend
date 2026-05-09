@@ -1,6 +1,6 @@
 package com.haykor.features.eventCategories.presentation.model
 
-import com.haykor.core.common.domain.Visibility
+import com.haykor.core.visibility.domain.model.Visibility
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,6 +1,6 @@
 package com.haykor.features.eventCategories.domain.model
 
-import com.haykor.core.common.domain.Visibility
+import com.haykor.core.visibility.domain.model.Visibility
 
 data class EventCategory(
     val id: Int,
