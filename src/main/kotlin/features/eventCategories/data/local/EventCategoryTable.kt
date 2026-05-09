@@ -1,6 +1,6 @@
 package com.haykor.features.eventCategories.data.local
 
-import com.haykor.core.common.domain.Visibility
+import com.haykor.core.visibility.domain.model.Visibility
 import com.haykor.features.user.data.local.UserTable
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime

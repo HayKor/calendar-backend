@@ -1,6 +1,6 @@
 package features.eventCategories.presentation
 
-import com.haykor.core.common.domain.Visibility
+import com.haykor.core.visibility.domain.model.Visibility
 import com.haykor.features.eventCategories.domain.model.EventCategory
 import com.haykor.features.eventCategories.domain.model.EventCategoryException
 import com.haykor.features.eventCategories.domain.usecase.CreateEventCategoryUseCase
