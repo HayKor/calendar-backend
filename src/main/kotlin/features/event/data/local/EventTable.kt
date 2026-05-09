@@ -21,7 +21,7 @@ object EventTable : IntIdTable("events") {
     val endAt = timestampWithTimeZone("end_at").nullable()
 
     val isAllDay = bool("is_all_day").default(false)
-    val visibility = enumeration("visibility", Visibility::class)
+    val visibility = enumeration<Visibility>("visibility")
         .default(Visibility.Friends)
 
     val isRecurring = bool("is_recurring").default(false)
