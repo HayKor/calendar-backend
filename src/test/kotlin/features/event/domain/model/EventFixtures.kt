@@ -1,7 +1,7 @@
 package features.event.domain.model
 
-import com.haykor.core.visibility.domain.model.Visibility
 import com.haykor.core.util.mapper.toKotlinLocalDate
+import com.haykor.core.visibility.domain.model.Visibility
 import com.haykor.features.event.domain.model.Event
 import com.haykor.features.event.domain.model.EventOccurrence
 import com.haykor.features.event.domain.repository.CreateEventParams
@@ -13,7 +13,7 @@ internal val currentDate = OffsetDateTime.now()
 object EventFixtures {
     fun createParams(
         userId: Int = 1,
-        categoryId: Int = 1,
+        categoryId: Int? = 1,
         title: String = "Help my mom",
         description: String = "Help my mom 2night",
         location: String = "New York",
@@ -45,7 +45,7 @@ object EventFixtures {
     fun event(
         id: Int = 1,
         userId: Int = 1,
-        categoryId: Int = 1,
+        categoryId: Int? = 1,
         title: String = "Help my mom",
         description: String = "Help my mom 2night",
         location: String = "New York",
@@ -81,7 +81,7 @@ object EventFixtures {
 
     fun occurrence(
         eventId: Int = 1,
-        categoryId: Int = 1,
+        categoryId: Int? = 1,
         title: String = "Help my mom",
         description: String = "Help my mom 2night",
         location: String = "New York",
