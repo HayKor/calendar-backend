@@ -9,6 +9,8 @@ import com.haykor.features.event.domain.repository.EventExceptionRepository
 import com.haykor.features.event.domain.repository.EventRepository
 import com.haykor.features.event.domain.service.RRuleExpander
 import com.haykor.features.eventCategories.domain.repository.EventCategoriesRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import java.time.OffsetDateTime
 
 class GetEventsInRangeUseCase(
@@ -23,12 +25,19 @@ class GetEventsInRangeUseCase(
         targetUserId: Int,
         from: OffsetDateTime,
         to: OffsetDateTime,
-    ): List<EventOccurrence> {
-        val relation = resolveViewerRelation(requesterId, targetUserId)
-        val categories = eventCategoriesRepository.getAllByUser(targetUserId)
-            .associateBy { it.id }
+    ): List<EventOccurrence> = coroutineScope {
+        val relationDeferred = async { resolveViewerRelation(requesterId, targetUserId) }
+        val categoriesDeferred = async {
+            eventCategoriesRepository.getAllByUser(targetUserId)
+                .associateBy { it.id }
+        }
+        val eventsDeferred = async { eventRepository.getByUserIdAndRange(targetUserId, from, to) }
 
-        val events = eventRepository.getByUserIdAndRange(targetUserId, from, to)
+        val relation = relationDeferred.await()
+        val categories = categoriesDeferred.await()
+        val eventsRaw = eventsDeferred.await()
+
+        val events = eventsRaw
             .filter { event ->
                 VisibilityGate.canView(
                     relation = relation,
@@ -51,6 +60,6 @@ class GetEventsInRangeUseCase(
             rruleExpander.expand(event, from, to, exceptions[event.id] ?: emptyList())
         }
 
-        return (regularOccurrences + recurringOccurrences).sortedBy { it.startAt }
+        (regularOccurrences + recurringOccurrences).sortedBy { it.startAt }
     }
 }

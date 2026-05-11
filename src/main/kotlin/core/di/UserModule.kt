@@ -8,10 +8,7 @@ import com.haykor.features.user.domain.repository.UserRelationshipRepository
 import com.haykor.features.user.domain.repository.UserRepository
 import com.haykor.features.user.domain.repository.UserSocialsRepository
 import com.haykor.features.user.domain.service.PasswordHasher
-import com.haykor.features.user.domain.usecase.CreateUserUseCase
-import com.haykor.features.user.domain.usecase.GetUserUseCase
-import com.haykor.features.user.domain.usecase.SendFriendRequestUseCase
-import com.haykor.features.user.domain.usecase.UpdateRelationshipUseCase
+import com.haykor.features.user.domain.usecase.*
 import org.koin.core.module.dsl.new
 import org.koin.dsl.module
 
@@ -24,6 +21,8 @@ val userModule =
 
         single { new(::CreateUserUseCase) }
         single { new(::GetUserUseCase) }
+
         single { new(::SendFriendRequestUseCase) }
         single { new(::UpdateRelationshipUseCase) }
+        single { new(::GetFriendsUseCase) }
     }
