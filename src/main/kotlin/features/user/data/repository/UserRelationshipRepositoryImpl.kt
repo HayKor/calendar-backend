@@ -71,13 +71,13 @@ class UserRelationshipRepositoryImpl(
             .singleOrNull()
     }
 
-    override suspend fun updateRelationship(id: Int, status: RelationshipStatus): UserRelationship? = suspendTransaction(db) {
+    override suspend fun updateRelationship(id: Int, status: RelationshipStatus): UserRelationship = suspendTransaction(db) {
         UserRelationshipTable.updateReturning(
             where = { UserRelationshipTable.id eq id },
         ) {
             it[this.status] = status
             it[updatedAt] = OffsetDateTime.now()
-        }.singleOrNull()?.toUserRelationship()
+        }.single().toUserRelationship()
     }
 
     private fun ResultRow.toUserRelationship() = UserRelationship(

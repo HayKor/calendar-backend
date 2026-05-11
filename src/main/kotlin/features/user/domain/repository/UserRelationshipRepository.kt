@@ -8,5 +8,5 @@ interface UserRelationshipRepository {
     suspend fun getById(id: Int): UserRelationship?
     suspend fun getRelationships(userId: Int): List<UserRelationship>
     suspend fun getRelationshipBetween(requesterId: Int, addresseeId: Int): UserRelationship?
-    suspend fun updateRelationship(id: Int, status: RelationshipStatus): UserRelationship?
+    suspend fun updateRelationship(id: Int, status: RelationshipStatus): UserRelationship
 }

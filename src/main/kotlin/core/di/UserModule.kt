@@ -25,4 +25,5 @@ val userModule =
         single { new(::SendFriendRequestUseCase) }
         single { new(::UpdateRelationshipUseCase) }
         single { new(::GetFriendsUseCase) }
+        single { new(::GetPendingRequestsUseCase) }
     }

@@ -1,4 +1,4 @@
-package com.haykor.features.user.presentation
+package com.haykor.features.user.presentation.routes
 
 import com.haykor.core.common.presentation.principalContext
 import com.haykor.core.exception.BadRequest
@@ -6,7 +6,7 @@ import com.haykor.features.user.domain.repository.CreateUserParams
 import com.haykor.features.user.domain.usecase.CreateUserUseCase
 import com.haykor.features.user.domain.usecase.GetUserUseCase
 import com.haykor.features.user.presentation.model.UserCreateRequest
-import com.haykor.features.user.presentation.model.UserResponse
+import com.haykor.features.user.presentation.model.toUserResponse
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
@@ -34,11 +34,7 @@ fun Route.userRoutes() {
             )
             call.respond(
                 HttpStatusCode.Created,
-                UserResponse(
-                    id = user.id,
-                    email = user.email,
-                    name = user.name,
-                ),
+                user.toUserResponse(),
             )
         }
         get("/{id}") {
@@ -46,11 +42,7 @@ fun Route.userRoutes() {
             val user = getUserUseCase(id)
             call.respond(
                 HttpStatusCode.OK,
-                UserResponse(
-                    id = user.id,
-                    email = user.email,
-                    name = user.name,
-                ),
+                user.toUserResponse(),
             )
         }
         authenticate("auth-jwt") {
@@ -59,11 +51,7 @@ fun Route.userRoutes() {
                 val user = getUserUseCase(userId)
                 call.respond(
                     HttpStatusCode.OK,
-                    UserResponse(
-                        id = user.id,
-                        email = user.email,
-                        name = user.name,
-                    ),
+                    user.toUserResponse(),
                 )
             }
         }
