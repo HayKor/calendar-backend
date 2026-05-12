@@ -30,6 +30,5 @@ data class UpdateEventParams(
     val eventTimezone: String?,
     val visibility: Visibility?,
     val isRecurring: Boolean?,
-    val rrule: String?,
-    val recurrenceUntil: OffsetDateTime?,
+    val rrule: RRuleInput,
 )

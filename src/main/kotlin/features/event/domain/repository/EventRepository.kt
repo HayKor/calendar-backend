@@ -1,6 +1,7 @@
 package com.haykor.features.event.domain.repository
 
 import com.haykor.features.event.data.model.CreateEventDbParams
+import com.haykor.features.event.data.model.UpdateEventDbParams
 import com.haykor.features.event.domain.model.Event
 import java.time.OffsetDateTime
 
@@ -14,6 +15,6 @@ interface EventRepository {
         to: OffsetDateTime,
     ): List<Event>
 
-    suspend fun update(id: Int, params: UpdateEventParams): Event?
+    suspend fun update(id: Int, params: UpdateEventDbParams): Event?
     suspend fun delete(id: Int): Boolean
 }

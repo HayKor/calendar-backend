@@ -2,9 +2,9 @@ package com.haykor.features.event.data.repository
 
 import com.haykor.features.event.data.local.EventTable
 import com.haykor.features.event.data.model.CreateEventDbParams
+import com.haykor.features.event.data.model.UpdateEventDbParams
 import com.haykor.features.event.domain.model.Event
 import com.haykor.features.event.domain.repository.EventRepository
-import com.haykor.features.event.domain.repository.UpdateEventParams
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.singleOrNull
@@ -90,7 +90,7 @@ class EventRepositoryImpl(
             .toList()
     }
 
-    override suspend fun update(id: Int, params: UpdateEventParams): Event? = suspendTransaction(db) {
+    override suspend fun update(id: Int, params: UpdateEventDbParams): Event? = suspendTransaction(db) {
         EventTable.updateReturning(
             where = { EventTable.id eq id },
         ) {

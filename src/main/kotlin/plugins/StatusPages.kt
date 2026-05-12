@@ -4,6 +4,7 @@ import com.haykor.core.common.presentation.ErrorResponse
 import com.haykor.core.exception.AppException
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -14,11 +15,20 @@ fun Application.configureStatusPages() {
         exception<AppException> { call, cause ->
             call.respond(
                 status = cause.statusCode,
-                message =
-                ErrorResponse(
+                message = ErrorResponse(
                     error = cause.message,
                     path = call.request.path(),
                     status = cause.statusCode.value,
+                ),
+            )
+        }
+        exception<BadRequestException> { call, cause ->
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = ErrorResponse(
+                    error = "Invalid request body",
+                    path = call.request.path(),
+                    status = 400,
                 ),
             )
         }
@@ -29,8 +39,7 @@ fun Application.configureStatusPages() {
 
             call.respond(
                 status = HttpStatusCode.InternalServerError,
-                message =
-                ErrorResponse(
+                message = ErrorResponse(
                     error = "An unexpected internal server error occurred.",
                     path = call.request.path(),
                     status = 500,

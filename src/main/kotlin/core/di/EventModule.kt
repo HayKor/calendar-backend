@@ -6,12 +6,7 @@ import com.haykor.features.event.data.service.RRuleExpanderImpl
 import com.haykor.features.event.domain.repository.EventExceptionRepository
 import com.haykor.features.event.domain.repository.EventRepository
 import com.haykor.features.event.domain.service.RRuleExpander
-import com.haykor.features.event.domain.usecase.CreateEventUseCase
-import com.haykor.features.event.domain.usecase.DeleteEventUseCase
-import com.haykor.features.event.domain.usecase.GetEventByIdUseCase
-import com.haykor.features.event.domain.usecase.GetEventsInRangeUseCase
-import com.haykor.features.event.domain.usecase.UpdateEventOccurrenceUseCase
-import com.haykor.features.event.domain.usecase.UpdateEventUseCase
+import com.haykor.features.event.domain.usecase.*
 import org.koin.core.module.dsl.new
 import org.koin.dsl.module
 
@@ -26,4 +21,5 @@ val eventModule = module {
     single { new(::UpdateEventUseCase) }
     single { new(::UpdateEventOccurrenceUseCase) }
     single { new(::DeleteEventUseCase) }
+    single { new(::DeleteEventOccurrenceUseCase) }
 }
