@@ -10,14 +10,18 @@ import com.haykor.features.event.presentation.model.mapper.toParams
 import com.haykor.features.event.presentation.model.mapper.toResponse
 import com.haykor.features.event.presentation.util.parseRRuleInput
 import io.ktor.http.*
+import io.ktor.openapi.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.routing.openapi.*
+import io.ktor.utils.io.*
 import kotlinx.datetime.LocalDate
 import org.koin.ktor.ext.inject
 import java.time.OffsetDateTime
 
+@OptIn(ExperimentalKtorApi::class)
 fun Route.eventRoutes() {
     val createEventUseCase by inject<CreateEventUseCase>()
     val getEventByIdUseCase by inject<GetEventByIdUseCase>()
@@ -57,6 +61,21 @@ fun Route.eventRoutes() {
 
                 val occurrences = getEventsInRangeUseCase(requesterId, targetUserId, from, to)
                 call.respond(HttpStatusCode.OK, occurrences.map { it.toResponse() })
+            }.describe {
+                parameters {
+                    query("targetUserId") { required = true }
+                    query("from") {
+                        description = "Range start (ISO-8601 datetime with offset)"
+                        example = GenericElementString("2026-05-01T00:00:00+03:00")
+                        required = true
+                    }
+
+                    query("to") {
+                        description = "Range end (ISO-8601 datetime with offset)"
+                        example = GenericElementString("2026-06-01T00:00:00+03:00")
+                        required = true
+                    }
+                }
             }
 
             route("/{id}") {
