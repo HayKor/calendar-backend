@@ -1,10 +1,11 @@
 package com.haykor.features.event.domain.repository
 
+import com.haykor.features.event.data.model.CreateEventDbParams
 import com.haykor.features.event.domain.model.Event
 import java.time.OffsetDateTime
 
 interface EventRepository {
-    suspend fun create(params: CreateEventParams): Event
+    suspend fun create(params: CreateEventDbParams): Event
     suspend fun getById(id: Int): Event?
     suspend fun getAllByUserId(userId: Int): List<Event>
     suspend fun getByUserIdAndRange(

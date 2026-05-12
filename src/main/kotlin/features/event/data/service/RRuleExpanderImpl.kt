@@ -4,14 +4,13 @@ import com.haykor.core.util.mapper.toKotlinLocalDate
 import com.haykor.features.event.domain.model.Event
 import com.haykor.features.event.domain.model.EventException
 import com.haykor.features.event.domain.model.EventOccurrence
+import com.haykor.features.event.domain.model.Freq
 import com.haykor.features.event.domain.model.mapper.toOccurrence
 import com.haykor.features.event.domain.service.RRuleExpander
 import kotlinx.datetime.*
 import java.time.OffsetDateTime
 
 class RRuleExpanderImpl : RRuleExpander {
-    private enum class Freq { DAILY, WEEKLY, MONTHLY, YEARLY }
-
     private data class RRuleParams(
         val freq: Freq,
         val interval: Int = 1,

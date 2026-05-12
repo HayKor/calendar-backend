@@ -1,23 +1,20 @@
-package com.haykor.features.event.domain.model
+package com.haykor.features.event.data.model
 
 import com.haykor.core.visibility.domain.model.Visibility
 import java.time.OffsetDateTime
 
-data class Event(
-    val id: Int,
+data class CreateEventDbParams(
     val userId: Int,
     val categoryId: Int? = null,
     val title: String,
     val description: String? = null,
     val location: String? = null,
-    val eventTimezone: String,
     val startAt: OffsetDateTime,
     val endAt: OffsetDateTime? = null,
     val isAllDay: Boolean,
-    val visibility: Visibility,
+    val eventTimezone: String,
+    val visibility: Visibility = Visibility.Friends,
     val isRecurring: Boolean,
-    val rrule: String? = null, // TODO: return RRules instead of a String
+    val rrule: String? = null,
     val recurrenceUntil: OffsetDateTime? = null,
-    val createdAt: OffsetDateTime,
-    val updatedAt: OffsetDateTime,
 )

@@ -49,7 +49,7 @@ class GetEventsInRangeUseCase(
 
         val (recurringEvents, regularEvents) = events.partition { it.isRecurring }
         val exceptions = if (recurringEvents.isNotEmpty()) {
-            eventExceptionRepository.getByEventIds(recurringEvents.map { it.id }, from, to)
+            eventExceptionRepository.getByEventIdsWithRange(recurringEvents.map { it.id }, from, to)
                 .groupBy { it.eventId }
         } else {
             emptyMap()

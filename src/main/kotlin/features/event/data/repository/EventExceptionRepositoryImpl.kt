@@ -31,7 +31,18 @@ class EventExceptionRepositoryImpl(
         }.single().toEventException()
     }
 
-    override suspend fun getByEventId(eventId: Int): List<EventException> = suspendTransaction(db) {
+    override suspend fun getByEventIdAndDate(
+        eventId: Int,
+        date: LocalDate,
+    ): EventException? = suspendTransaction(db) {
+        EventExceptionTable
+            .selectAll()
+            .where { (EventExceptionTable.event eq eventId) and (EventExceptionTable.originalDate eq date) }
+            .map { it.toEventException() }
+            .singleOrNull()
+    }
+
+    override suspend fun getAllByEventId(eventId: Int): List<EventException> = suspendTransaction(db) {
         EventExceptionTable
             .selectAll()
             .where { EventExceptionTable.event eq eventId }
@@ -39,7 +50,7 @@ class EventExceptionRepositoryImpl(
             .toList()
     }
 
-    override suspend fun getByEventIds(
+    override suspend fun getByEventIdsWithRange(
         eventIds: List<Int>,
         from: OffsetDateTime,
         to: OffsetDateTime,

@@ -1,4 +1,4 @@
-package com.haykor.features.eventCategories.presentation
+package com.haykor.features.eventCategories.presentation.routes
 
 import com.haykor.core.common.presentation.principalContext
 import com.haykor.core.exception.BadRequest

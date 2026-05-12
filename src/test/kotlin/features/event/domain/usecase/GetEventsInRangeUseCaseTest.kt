@@ -50,7 +50,7 @@ class GetEventsInRangeUseCaseTest {
     fun `returns empty list when no events`() = runTest {
         mockDefaults(targetUserId = 10)
         coEvery { eventRepository.getByUserIdAndRange(10, from, to) } returns emptyList()
-        coEvery { eventExceptionRepository.getByEventIds(emptyList(), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(emptyList(), from, to) } returns emptyList()
 
         val result = useCase(requesterId = 1, targetUserId = 10, from, to)
 
@@ -62,7 +62,7 @@ class GetEventsInRangeUseCaseTest {
         mockDefaults()
         val event = EventFixtures.event(isRecurring = false, rrule = null)
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(event)
-        coEvery { eventExceptionRepository.getByEventIds(emptyList(), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(emptyList(), from, to) } returns emptyList()
 
         val result = useCase(requesterId = 1, targetUserId = 1, from, to)
 
@@ -77,7 +77,7 @@ class GetEventsInRangeUseCaseTest {
         val event = EventFixtures.event(isRecurring = true)
         val occurrence = EventFixtures.occurrence(eventId = event.id)
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(event)
-        coEvery { eventExceptionRepository.getByEventIds(listOf(event.id), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(listOf(event.id), from, to) } returns emptyList()
         coEvery { rruleExpander.expand(event, from, to, emptyList()) } returns listOf(occurrence)
 
         val result = useCase(requesterId = 1, targetUserId = 1, from, to)
@@ -95,7 +95,7 @@ class GetEventsInRangeUseCaseTest {
         val laterOccurrence = EventFixtures.occurrence(eventId = 2, startAt = from.plusDays(3))
 
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(regularEvent, recurringEvent)
-        coEvery { eventExceptionRepository.getByEventIds(listOf(2), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(listOf(2), from, to) } returns emptyList()
         coEvery { rruleExpander.expand(recurringEvent, from, to, emptyList()) } returns listOf(
             earlierOccurrence,
             laterOccurrence,
@@ -117,7 +117,7 @@ class GetEventsInRangeUseCaseTest {
         val privateEvent = EventFixtures.event(id = 1, visibility = Visibility.Private)
         val publicEvent = EventFixtures.event(id = 2, visibility = Visibility.Public, isRecurring = false, rrule = null)
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(privateEvent, publicEvent)
-        coEvery { eventExceptionRepository.getByEventIds(emptyList(), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(emptyList(), from, to) } returns emptyList()
 
         val result = useCase(requesterId = 2, targetUserId = 1, from, to)
 
@@ -129,7 +129,7 @@ class GetEventsInRangeUseCaseTest {
     fun `friends events are hidden from strangers but visible to friends`() = runTest {
         val friendsEvent = EventFixtures.event(visibility = Visibility.Friends, isRecurring = false, rrule = null)
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(friendsEvent)
-        coEvery { eventExceptionRepository.getByEventIds(emptyList(), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(emptyList(), from, to) } returns emptyList()
         coEvery { eventCategoriesRepository.getAllByUser(1) } returns emptyList()
 
         coEvery { resolveViewerRelation(2, 1) } returns ViewerRelation.Stranger
@@ -150,7 +150,7 @@ class GetEventsInRangeUseCaseTest {
             EventFixtures.event(id = 3, visibility = Visibility.Private, isRecurring = false, rrule = null),
         )
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns events
-        coEvery { eventExceptionRepository.getByEventIds(emptyList(), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(emptyList(), from, to) } returns emptyList()
 
         val result = useCase(requesterId = 1, targetUserId = 1, from, to)
 
@@ -169,7 +169,7 @@ class GetEventsInRangeUseCaseTest {
         coEvery { resolveViewerRelation(2, 1) } returns ViewerRelation.Friend
         coEvery { eventCategoriesRepository.getAllByUser(1) } returns listOf(privateCategory)
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(event)
-        coEvery { eventExceptionRepository.getByEventIds(emptyList(), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(emptyList(), from, to) } returns emptyList()
 
         // category is private → effective visibility is private → friend can't see it
         val result = useCase(requesterId = 2, targetUserId = 1, from, to)
@@ -185,12 +185,12 @@ class GetEventsInRangeUseCaseTest {
         val regularEvent = EventFixtures.event(id = 1, isRecurring = false, rrule = null)
         val recurringEvent = EventFixtures.event(id = 2, isRecurring = true)
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(regularEvent, recurringEvent)
-        coEvery { eventExceptionRepository.getByEventIds(listOf(2), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(listOf(2), from, to) } returns emptyList()
         coEvery { rruleExpander.expand(recurringEvent, from, to, emptyList()) } returns emptyList()
 
         useCase(requesterId = 1, targetUserId = 1, from, to)
 
-        coVerify(exactly = 1) { eventExceptionRepository.getByEventIds(listOf(2), from, to) }
+        coVerify(exactly = 1) { eventExceptionRepository.getByEventIdsWithRange(listOf(2), from, to) }
     }
 
     @Test
@@ -201,7 +201,7 @@ class GetEventsInRangeUseCaseTest {
         val exceptionForEvent1 = EventExceptionFixtures.exception(eventId = 1)
         val exceptionForEvent2 = EventExceptionFixtures.exception(eventId = 2)
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(event1, event2)
-        coEvery { eventExceptionRepository.getByEventIds(listOf(1, 2), from, to) } returns listOf(
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(listOf(1, 2), from, to) } returns listOf(
             exceptionForEvent1,
             exceptionForEvent2,
         )
@@ -219,7 +219,7 @@ class GetEventsInRangeUseCaseTest {
         mockDefaults()
         val regularEvent = EventFixtures.event(id = 1, isRecurring = false, rrule = null)
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(regularEvent)
-        coEvery { eventExceptionRepository.getByEventIds(emptyList(), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(emptyList(), from, to) } returns emptyList()
 
         useCase(requesterId = 1, targetUserId = 1, from, to)
 
@@ -231,7 +231,7 @@ class GetEventsInRangeUseCaseTest {
         mockDefaults()
         val recurringEvent = EventFixtures.event(id = 1, isRecurring = true)
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(recurringEvent)
-        coEvery { eventExceptionRepository.getByEventIds(listOf(1), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(listOf(1), from, to) } returns emptyList()
         coEvery { rruleExpander.expand(recurringEvent, from, to, emptyList()) } returns emptyList()
 
         useCase(requesterId = 1, targetUserId = 1, from, to)
@@ -247,7 +247,7 @@ class GetEventsInRangeUseCaseTest {
         val early = EventFixtures.event(id = 1, isRecurring = false, rrule = null, startAt = from.plusDays(3))
         val late = EventFixtures.event(id = 2, isRecurring = false, rrule = null, startAt = from.plusDays(1))
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(early, late)
-        coEvery { eventExceptionRepository.getByEventIds(emptyList(), from, to) } returns emptyList()
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(emptyList(), from, to) } returns emptyList()
 
         val result = useCase(requesterId = 1, targetUserId = 1, from, to)
 
@@ -265,7 +265,7 @@ class GetEventsInRangeUseCaseTest {
         val occurrences1 = listOf(EventFixtures.occurrence(eventId = 1, startAt = from.plusDays(1)))
         val occurrences2 = listOf(EventFixtures.occurrence(eventId = 2, startAt = from.plusDays(2)))
         coEvery { eventRepository.getByUserIdAndRange(1, from, to) } returns listOf(event1, event2)
-        coEvery { eventExceptionRepository.getByEventIds(listOf(1, 2), from, to) } returns listOf(
+        coEvery { eventExceptionRepository.getByEventIdsWithRange(listOf(1, 2), from, to) } returns listOf(
             exception1,
             exception2,
         )

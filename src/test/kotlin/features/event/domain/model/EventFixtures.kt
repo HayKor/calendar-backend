@@ -4,6 +4,8 @@ import com.haykor.core.util.mapper.toKotlinLocalDate
 import com.haykor.core.visibility.domain.model.Visibility
 import com.haykor.features.event.domain.model.Event
 import com.haykor.features.event.domain.model.EventOccurrence
+import com.haykor.features.event.domain.model.Freq
+import com.haykor.features.event.domain.model.RRuleInput
 import com.haykor.features.event.domain.repository.CreateEventParams
 import kotlinx.datetime.LocalDate
 import java.time.OffsetDateTime
@@ -24,7 +26,10 @@ object EventFixtures {
         visibility: Visibility = Visibility.Friends,
         isRecurring: Boolean = true,
 //        rrule: String? = "FREQ=DAILY;UNTIL=20260612T235959Z", // daily till 12.06.2026 23:59 UTC+0
-        rrule: String? = "FREQ=DAILY", // daily
+        rrule: RRuleInput = RRuleInput(
+            isRecurring = true,
+            freq = Freq.DAILY,
+        ), // daily
         recurrenceUntil: OffsetDateTime = currentDate.plusMonths(1),
     ) = CreateEventParams(
         userId = userId,
@@ -39,7 +44,7 @@ object EventFixtures {
         visibility = visibility,
         isRecurring = isRecurring,
         rrule = rrule,
-        recurrenceUntil = recurrenceUntil,
+//        recurrenceUntil = recurrenceUntil,
     )
 
     fun event(

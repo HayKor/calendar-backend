@@ -17,3 +17,7 @@ abstract class ConflictException(
 abstract class ForbiddenException(
     message: String,
 ) : AppException(message, HttpStatusCode.Forbidden)
+
+abstract class BadRequestException(
+    message: String,
+) : AppException(message, HttpStatusCode.BadRequest)

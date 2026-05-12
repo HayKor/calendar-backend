@@ -7,8 +7,8 @@ import com.haykor.features.eventCategories.domain.usecase.CreateEventCategoryUse
 import com.haykor.features.eventCategories.domain.usecase.DeleteEventCategoryUseCase
 import com.haykor.features.eventCategories.domain.usecase.GetAllEventCategoriesUseCase
 import com.haykor.features.eventCategories.domain.usecase.GetEventCategoryByIdUseCase
-import com.haykor.features.eventCategories.presentation.eventCategoriesRoutes
 import com.haykor.features.eventCategories.presentation.model.EventCategoryResponse
+import com.haykor.features.eventCategories.presentation.routes.eventCategoriesRoutes
 import common.BaseRouteTest
 import common.generateTestToken
 import io.ktor.client.call.*

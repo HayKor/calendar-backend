@@ -1,6 +1,7 @@
 package com.haykor.features.event.domain.repository
 
 import com.haykor.core.visibility.domain.model.Visibility
+import com.haykor.features.event.domain.model.RRuleInput
 import java.time.OffsetDateTime
 
 data class CreateEventParams(
@@ -15,8 +16,7 @@ data class CreateEventParams(
     val eventTimezone: String,
     val visibility: Visibility = Visibility.Friends,
     val isRecurring: Boolean,
-    val rrule: String? = null,
-    val recurrenceUntil: OffsetDateTime? = null,
+    val rrule: RRuleInput,
 )
 
 data class UpdateEventParams(
