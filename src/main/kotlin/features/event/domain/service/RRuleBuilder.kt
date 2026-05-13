@@ -4,6 +4,7 @@ import com.haykor.features.event.domain.model.EventError
 import com.haykor.features.event.domain.model.RRuleInput
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.number
 
 object RRuleBuilder {
     fun build(params: RRuleInput): String? {
@@ -20,9 +21,12 @@ object RRuleBuilder {
         }.joinToString(";")
     }
 
-    private fun formatUntil(date: LocalDate) = "${date.year}${date.month.toString().padStart(2, '0')}${
-        date.month.toString().padStart(2, '0')
-    }T235959Z"
+    private fun formatUntil(date: LocalDate): String {
+        val year = date.year
+        val month = date.month.number.toString().padStart(2, '0')
+        val day = date.day.toString().padStart(2, '0')
+        return "${year}${month}${day}T235959Z"
+    }
 
     private fun DayOfWeek.toRRuleCode() = when (this) {
         DayOfWeek.MONDAY -> "MO"

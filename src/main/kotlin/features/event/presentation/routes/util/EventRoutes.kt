@@ -42,8 +42,13 @@ fun Route.eventRoutes() {
             post {
                 val (userId) = principalContext()
                 val request = call.receive<CreateEventRequest>()
-                val event = createEventUseCase(request.toParams(userId, call.parseRRuleInput()))
+                val rrule = call.parseRRuleInput()
+                val event = createEventUseCase(request.toParams(userId, rrule))
                 call.respond(HttpStatusCode.Created, event.toResponse())
+            }.describe {
+                requestBody {
+                    this.schema = jsonSchema<CreateEventRequest>()
+                }
             }
 
             /**
