@@ -45,10 +45,6 @@ fun Route.eventRoutes() {
                 val rrule = call.parseRRuleInput()
                 val event = createEventUseCase(request.toParams(userId, rrule))
                 call.respond(HttpStatusCode.Created, event.toResponse())
-            }.describe {
-                requestBody {
-                    this.schema = jsonSchema<CreateEventRequest>()
-                }
             }
 
             /**
@@ -121,10 +117,7 @@ fun Route.eventRoutes() {
                      */
                     patch {
                         val (userId) = principalContext()
-                        val id = call.parameters["id"]?.toIntOrNull() ?: throw BadRequest("Invalid id")
-                        val date = call.parameters["date"]?.let {
-                            runCatching { LocalDate.parse(it) }.getOrElse { throw BadRequest("Invalid date, expected YYYY-MM-DD") }
-                        } ?: throw BadRequest("date is required")
+                        val (id, date) = parseIdWithDateContext()
                         val request = call.receive<UpdateOccurrenceRequest>()
                         val exception = updateEventOccurrenceUseCase(userId, id, date, request.toParams())
                         call.respond(HttpStatusCode.OK, exception.toResponse())
@@ -135,10 +128,7 @@ fun Route.eventRoutes() {
                      */
                     delete {
                         val (userId) = principalContext()
-                        val id = call.parameters["id"]?.toIntOrNull() ?: throw BadRequest("Invalid id")
-                        val date = call.parameters["date"]?.let {
-                            runCatching { LocalDate.parse(it) }.getOrElse { throw BadRequest("Invalid date, expected YYYY-MM-DD") }
-                        } ?: throw BadRequest("date is required")
+                        val (id, date) = parseIdWithDateContext()
                         deleteEventOccurrenceUseCase(userId, id, date)
                         call.respond(HttpStatusCode.NoContent)
                     }
@@ -146,4 +136,14 @@ fun Route.eventRoutes() {
             }
         }
     }
+}
+
+private data class IdWithDateContext(val id: Int, val date: LocalDate)
+
+private fun RoutingContext.parseIdWithDateContext(): IdWithDateContext {
+    val id = call.parameters["id"]?.toIntOrNull() ?: throw BadRequest("Invalid id")
+    val date = call.parameters["date"]?.let {
+        runCatching { LocalDate.parse(it) }.getOrElse { throw BadRequest("Invalid date, expected YYYY-MM-DD") }
+    } ?: throw BadRequest("date is required")
+    return IdWithDateContext(id, date)
 }

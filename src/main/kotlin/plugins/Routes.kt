@@ -1,7 +1,7 @@
 package com.haykor.plugins
 
 import com.haykor.core.health.presentation.healthCheckRoutes
-import com.haykor.features.auth.presentation.authRoutes
+import com.haykor.features.auth.presentation.routes.authRoutes
 import com.haykor.features.event.presentation.routes.util.eventRoutes
 import com.haykor.features.eventCategories.presentation.routes.eventCategoriesRoutes
 import com.haykor.features.user.presentation.routes.userRelationshipRoutes

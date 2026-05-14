@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 
-fun RoutingCall.parseRRuleInput(): RRuleInput {
+internal fun RoutingCall.parseRRuleInput(): RRuleInput {
     val params = request.queryParameters
     val freq = params["freq"]?.uppercase()?.let {
         runCatching { Freq.valueOf(it) }.getOrElse { throw BadRequest("Invalid freq: $it") }

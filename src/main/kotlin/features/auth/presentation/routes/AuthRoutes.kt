@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-package com.haykor.features.auth.presentation
+package com.haykor.features.auth.presentation.routes
 
 import com.haykor.core.common.presentation.requestContext
 import com.haykor.features.auth.domain.model.Auth
